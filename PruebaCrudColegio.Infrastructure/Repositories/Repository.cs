@@ -18,14 +18,15 @@ namespace PruebaCrudColegio.Infrastructure.Repositories
                 await _pruebaCrudColegioContext.Set<T>().AddAsync(entity);
                 await _pruebaCrudColegioContext.SaveChangesAsync();
             }
-            catch (DbUpdateException Ex)
+            catch (DbUpdateException ex)
             {
-                Console.WriteLine(Ex.InnerException?.Message);
+                Console.WriteLine(ex.InnerException?.Message);
                 throw;
             }
 
             return entity;
         }
+
         public async Task<bool> DeleteAsync(T entity)
         {
             try {
@@ -34,32 +35,64 @@ namespace PruebaCrudColegio.Infrastructure.Repositories
                 return true;
 
             }
-            catch (DbUpdateException Ex)
+            catch (DbUpdateException ex)
             {
-                Console.WriteLine(Ex.InnerException?.Message);
+                Console.WriteLine(ex.InnerException?.Message);
                 return false;
             }
         }
         public async Task<IList<T>> GetAllAsync()
         {
-            return await _pruebaCrudColegioContext.Set<T>().ToListAsync();
+            try
+            {
+                return await _pruebaCrudColegioContext.Set<T>().ToListAsync();
+            }
+            catch (ArgumentNullException ex)
+            {
+                Console.WriteLine(ex.InnerException?.Message);
+                throw;
+            }
         }
 
         public async Task<IList<T>> GetWhere(Expression<Func<T, bool>> predicate)
         {
-            return await _pruebaCrudColegioContext.Set<T>().Where(predicate).ToListAsync();
+            try
+            {
+                return await _pruebaCrudColegioContext.Set<T>().Where(predicate).ToListAsync();
+            }
+            catch (ArgumentNullException ex)
+            {
+                Console.WriteLine(ex.InnerException?.Message);
+                throw;
+            }
         }
 
         public async Task<T?> GetByIdAsync(Guid id)
         {
-            return await _pruebaCrudColegioContext.Set<T>().FindAsync(id);
+            try
+            {
+                return await _pruebaCrudColegioContext.Set<T>().FindAsync(id);
+            }
+            catch (NotSupportedException ex)
+            {
+                Console.WriteLine(ex.InnerException?.Message);
+                throw;
+            }
         }
 
         public async Task<T> UpdateAsync(T entity)
         {
-            _pruebaCrudColegioContext.Entry(entity).State = EntityState.Modified;
-            await _pruebaCrudColegioContext.SaveChangesAsync();
-            return entity;
+            try
+            {
+                _pruebaCrudColegioContext.Entry(entity).State = EntityState.Modified;
+                await _pruebaCrudColegioContext.SaveChangesAsync();
+                return entity;
+            }
+            catch (DbUpdateException ex)
+            {
+                Console.WriteLine(ex.InnerException?.Message);
+                throw;
+            }
         }
     }
 }
