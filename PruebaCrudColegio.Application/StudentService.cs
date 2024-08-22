@@ -1,4 +1,5 @@
-﻿using PruebaCrudColegio.Application.Interface;
+﻿using PruebaCrudColegio.Application.Dtos;
+using PruebaCrudColegio.Application.Interface;
 using PruebaCrudColegio.Core.Model;
 using PruebaCrudColegio.Infrastructure.Repositories.Interface;
 
@@ -12,8 +13,10 @@ namespace PruebaCrudColegio.Application
             _studentRepository = studentRepository;
         }
         
-        public async Task<Student> AddStudent(Student student)
+        public async Task<Student> AddStudent(StudentDto studentDto)
         {
+            Student student = MapStudent(studentDto);
+
             await _studentRepository.AddAsync(student);
 
             return student;
@@ -29,9 +32,16 @@ namespace PruebaCrudColegio.Application
             return false;
         }
 
-        public async Task<IList<Student>> GetAllStudents()
+        public async Task<IList<StudentDto>> GetAllStudents()
         {
-            return await _studentRepository.GetAllAsync();
+            var students = await _studentRepository.GetAllAsync();
+            return students.Select(x => new StudentDto()
+            {
+                Id = x.Id,
+                FirstName = x.FirstName,
+                LastName = x.LastName,
+                CollegeId = x.CollegeId,
+            }).ToList();
         }
 
         public async Task<Student?> GetStudentById(Guid id)
@@ -39,8 +49,10 @@ namespace PruebaCrudColegio.Application
             return await _studentRepository.GetByIdAsync(id);
         }
 
-        public async Task UpdateStudent(Guid id, Student student)
+        public async Task UpdateStudent(Guid id, StudentDto studentDto)
         {
+            var student = MapStudent(studentDto);
+
             var studentToEdit = await _studentRepository.GetByIdAsync(id);
             if (studentToEdit != null)
             {
@@ -50,6 +62,17 @@ namespace PruebaCrudColegio.Application
 
                 await _studentRepository.UpdateAsync(studentToEdit);
             }
+        }
+
+        private static Student MapStudent(StudentDto studentDto)
+        {
+            return new Student()
+            {
+                CollegeId = studentDto.CollegeId,
+                Id = studentDto.Id,
+                FirstName = studentDto.FirstName,
+                LastName = studentDto.LastName,
+            };
         }
     }
 }

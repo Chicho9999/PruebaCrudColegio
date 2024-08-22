@@ -7,38 +7,22 @@ import { HttpClient } from '@angular/common/http';
 })
 export class UserService {
   private http = inject(HttpClient);
+  private url = 'http://localhost:5053/api/student';
+  private users : User[] = [];
 
-  private readonly users = this.getApiUsers();
-
-  /**
-   * @returns 
-   */
-  getApiUsers() {
-    return this.http.get<User[]>('http://localhost:5053/api/student');
-  }
-
-  /**
-   * @returns 
-   */
-  addApiUser(user: User) {
-    return this.http.post<User>('http://localhost:5053/api/student', user);
-  }
-
-  getAllUsers(): User[] {
-    return this.users;
+  getUsers() {
+    return this.http.get<User[]>(this.url);
   }
 
   addUser(user: User) {
-    user.id = this.users.length + 1;
-    this.users.push(user);
+    this.http.post<User>(this.url, user)
   }
 
   updateUser(user: User) {
-    const index = this.users.findIndex((u) => user.id === u.id);
-    this.users[index] = user;
+    this.http.put<User>(this.url, user)
   }
 
   deleteUser(user: User) {
-    this.users.splice(this.users.indexOf(user), 1);
+    this.http.delete<User>(this.url + user.id)
   }
 }

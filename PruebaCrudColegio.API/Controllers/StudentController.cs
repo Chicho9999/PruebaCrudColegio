@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using PruebaCrudColegio.Application.Dtos;
 using PruebaCrudColegio.Application.Interface;
 using PruebaCrudColegio.Core.Model;
 
@@ -38,7 +39,7 @@ namespace PruebaCrudColegio.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] Student entity)
+        public IActionResult Post([FromBody] StudentDto entity)
         {
             var student = _studentService.AddStudent(entity);
 
@@ -55,10 +56,9 @@ namespace PruebaCrudColegio.API.Controllers
         }
 
         [HttpPut]
-        [Route("{id}")]
-        public IActionResult Put([FromRoute] Guid id, [FromBody] Student student)
+        public IActionResult Put([FromBody] StudentDto studentDto)
         {
-            var studentToEdit = _studentService.UpdateStudent(id, student);
+            var studentToEdit = _studentService.UpdateStudent(studentDto.Id, studentDto);
             if (studentToEdit == null)
             {
                 return NotFound();

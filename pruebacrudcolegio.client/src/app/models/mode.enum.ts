@@ -1,5 +1,5 @@
 export enum ModeEnum {
-  NON = "NON",
+  NON = "NOT",
   ADD = "ADD",
   EDIT = "EDIT",
 }

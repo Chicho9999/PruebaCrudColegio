@@ -17,9 +17,10 @@ export class AppComponent implements OnInit {
   private userService = inject(UserService);
   private fb = inject(FormBuilder);
   form = this.fb.group({
-    id: [0],
+    id: [''],
     firstName: ['', Validators.required],
     lastName: ['', Validators.required],
+    collegeId: ['', Validators.required], 
   });
   ModeEnum = ModeEnum;
   users!: User[];
@@ -30,7 +31,9 @@ export class AppComponent implements OnInit {
   }
 
   private setUsers() {
-    this.users = this.userService.getAllUsers();
+    this.userService.getUsers().subscribe(students => 
+      this.users = students
+    );
   }
 
   addNewUser() {
@@ -56,7 +59,6 @@ export class AppComponent implements OnInit {
     }
     this.setUsers();
     this.cancel();
-
   }
 
   removeUser(user: User) {
