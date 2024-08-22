@@ -8,14 +8,11 @@ namespace PruebaCrudColegio.API.Controllers
     [Route("api/[controller]")]
     public class StudentController : ControllerBase
     {
-        private readonly ILogger<StudentController> _logger;
-
         private readonly IStudentService _studentService;
 
-        public StudentController(ILogger<StudentController> logger, IStudentService studentService)
+        public StudentController(IStudentService studentService)
         {
             _studentService = studentService;
-            _logger = logger;
         }
 
         [HttpGet]
@@ -29,6 +26,15 @@ namespace PruebaCrudColegio.API.Controllers
             }
 
             return Ok(student);
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllAsync()
+        {
+            var students = await _studentService.GetAllStudents();
+
+            return Ok(students);
         }
 
         [HttpPost]

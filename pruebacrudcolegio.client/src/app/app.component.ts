@@ -1,37 +1,71 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
 
-interface WeatherForecast {
-  date: string;
-  temperatureC: number;
-  temperatureF: number;
-  summary: string;
-}
+import { Component, OnInit, inject } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+import { UserService } from './services/user.service';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { User } from './models/user';
+import { ModeEnum } from './models/mode.enum';
 
 @Component({
   selector: 'app-root',
+  standalone: true,
+  imports: [RouterOutlet, ReactiveFormsModule],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit {
-  public forecasts: WeatherForecast[] = [];
+  private userService = inject(UserService);
+  private fb = inject(FormBuilder);
+  form = this.fb.group({
+    id: [0],
+    firstName: ['', Validators.required],
+    lastName: ['', Validators.required],
+  });
+  ModeEnum = ModeEnum;
+  users!: User[];
+  mode = ModeEnum.NON;
 
-  constructor(private http: HttpClient) {}
-
-  ngOnInit() {
-    this.getForecasts();
+  ngOnInit(): void {
+    this.setUsers();
   }
 
-  getForecasts() {
-    this.http.get<WeatherForecast[]>('/weatherforecast').subscribe(
-      (result) => {
-        this.forecasts = result;
-      },
-      (error) => {
-        console.error(error);
-      }
-    );
+  private setUsers() {
+    this.users = this.userService.getAllUsers();
   }
 
-  title = 'pruebacrudcolegio.client';
+  addNewUser() {
+    this.mode = ModeEnum.ADD;
+  }
+
+  editUser(user: User) {
+    this.mode = ModeEnum.EDIT;
+    this.form.setValue(user);
+  }
+
+  saveUser() {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
+    const user = this.form.value as User;
+
+    if (this.mode === ModeEnum.ADD) {
+      this.userService.addUser(user);
+    } else {
+      this.userService.updateUser(user);
+    }
+    this.setUsers();
+    this.cancel();
+
+  }
+
+  removeUser(user: User) {
+    this.userService.deleteUser(user);
+    this.setUsers();
+  }
+
+  cancel() {
+    this.form.reset();
+    this.mode = ModeEnum.NON;
+  }
 }

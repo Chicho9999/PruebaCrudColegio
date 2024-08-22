@@ -1,5 +1,10 @@
 using Microsoft.EntityFrameworkCore;
+using PruebaCrudColegio.Application;
+using PruebaCrudColegio.Application.Interface;
+using PruebaCrudColegio.Core.Model;
 using PruebaCrudColegio.Infrastructure;
+using PruebaCrudColegio.Infrastructure.Repositories;
+using PruebaCrudColegio.Infrastructure.Repositories.Interface;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +13,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<PruebaCrudColegioContext>();
+builder.Services.AddScoped<IStudentService, StudentService>();
+builder.Services.AddScoped<IRepository<Student>, Repository<Student>>();
 builder.Services.AddDbContext<PruebaCrudColegioContext>(options =>
 {
     options.UseSqlServer();
