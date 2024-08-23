@@ -20,7 +20,7 @@ export class AppComponent implements OnInit {
     id: [''],
     firstName: ['', Validators.required],
     lastName: ['', Validators.required],
-    collegeId: ['', Validators.required], 
+    collegeId: ['9CBEA81B-AADA-4F31-8250-467BB3A5C0AA'], 
   });
   ModeEnum = ModeEnum;
   users!: User[];
@@ -53,17 +53,22 @@ export class AppComponent implements OnInit {
     const user = this.form.value as User;
 
     if (this.mode === ModeEnum.ADD) {
-      this.userService.addUser(user);
+
+      const userToCreate = {
+        firstName: user.firstName,
+        lastName: user.lastName,
+        collegeId: "9CBEA81B-AADA-4F31-8250-467BB3A5C0AA"
+      }
+
+      this.userService.addUser(userToCreate).subscribe(x => this.setUsers());
     } else {
-      this.userService.updateUser(user);
+      this.userService.updateUser(user).subscribe(x => this.setUsers());
     }
-    this.setUsers();
     this.cancel();
   }
 
   removeUser(user: User) {
-    this.userService.deleteUser(user);
-    this.setUsers();
+    this.userService.deleteUser(user.id).subscribe(x => this.setUsers());
   }
 
   cancel() {

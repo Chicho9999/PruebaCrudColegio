@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using PruebaCrudColegio.Core.Model;
-using System.Reflection.Metadata;
 
 namespace PruebaCrudColegio.Infrastructure
 {

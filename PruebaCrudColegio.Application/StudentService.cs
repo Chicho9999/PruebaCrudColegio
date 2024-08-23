@@ -22,11 +22,11 @@ namespace PruebaCrudColegio.Application
             return student;
         }
 
-        public async Task<bool> DeleteStudent(Guid id)
+        public bool DeleteStudent(Guid id)
         {
-            var studentToDelete = await _studentRepository.GetByIdAsync(id);
+            var studentToDelete = _studentRepository.GetById(id);
             if (studentToDelete != null) { 
-                await _studentRepository.DeleteAsync(studentToDelete);
+                _studentRepository.Delete(studentToDelete);
                 return true;
             }
             return false;
@@ -44,24 +44,28 @@ namespace PruebaCrudColegio.Application
             }).ToList();
         }
 
-        public async Task<Student?> GetStudentById(Guid id)
+        public Student? GetStudentById(Guid id)
         {
-            return await _studentRepository.GetByIdAsync(id);
+            return _studentRepository.GetById(id);
         }
 
-        public async Task UpdateStudent(Guid id, StudentDto studentDto)
+        public Student? UpdateStudent(Guid id, StudentDto studentDto)
         {
             var student = MapStudent(studentDto);
 
-            var studentToEdit = await _studentRepository.GetByIdAsync(id);
+            var studentToEdit = _studentRepository.GetById(id);
             if (studentToEdit != null)
             {
                 studentToEdit.FirstName = student.FirstName;
                 studentToEdit.LastName = student.LastName;
                 studentToEdit.CollegeId = student.CollegeId;
 
-                await _studentRepository.UpdateAsync(studentToEdit);
+                _studentRepository.Update(studentToEdit);
+
+                return studentToEdit;
             }
+
+            return null;
         }
 
         private static Student MapStudent(StudentDto studentDto)

@@ -18,9 +18,9 @@ namespace PruebaCrudColegio.API.Controllers
 
         [HttpGet]
         [Route("{id}")]
-        public async Task<IActionResult> GetAsync(Guid id)
+        public IActionResult Get(Guid id)
         {
-            var student = await _studentService.GetStudentById(id);
+            var student = _studentService.GetStudentById(id);
             if (student == null)
             {
                 return NotFound();
@@ -66,6 +66,7 @@ namespace PruebaCrudColegio.API.Controllers
 
             return Ok(new
             {
+                student = studentToEdit,
                 message = "Student Updated Successfully!!!",
                 id = studentToEdit!.Id
             });
@@ -74,9 +75,9 @@ namespace PruebaCrudColegio.API.Controllers
 
         [HttpDelete]
         [Route("{id}")]
-        public async Task<IActionResult> Delete([FromRoute] Guid id)
+        public IActionResult Delete([FromRoute] Guid id)
         {
-            var result = await _studentService.DeleteStudent(id);
+            var result = _studentService.DeleteStudent(id);
             if (!result)
             {
                 return NotFound();
