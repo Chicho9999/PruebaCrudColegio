@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using PruebaCrudColegio.Application.Dtos;
 using PruebaCrudColegio.Application.Interface;
-using PruebaCrudColegio.Core.Model;
 
 namespace PruebaCrudColegio.API.Controllers
 {
