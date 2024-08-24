@@ -44,10 +44,15 @@ namespace PruebaCrudColegio.Infrastructure.Repositories
                 return false;
             }
         }
-        public async Task<IList<T>> GetAllAsync()
+        public async Task<IList<T>> GetAllAsync(params Expression<Func<T, object>>[] includes)
         {
             try
             {
+                foreach (var include in includes)
+                {
+                    _DbSet.Include(include);
+                }
+
                 return await _DbSet.ToListAsync();
             }
             catch (ArgumentNullException ex)
@@ -70,10 +75,15 @@ namespace PruebaCrudColegio.Infrastructure.Repositories
             }
         }
 
-        public T? GetById(Guid id)
+        public T? GetById(Guid id, params Expression<Func<T, object>>[] includes)
         {
             try
             {
+                foreach (var include in includes)
+                {
+                    _DbSet.Include(include);
+                }
+
                 return _DbSet.Find(id);
             }
             catch (NotSupportedException ex)

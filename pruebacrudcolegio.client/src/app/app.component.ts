@@ -2,37 +2,61 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { UserService } from './services/user.service';
+import { ProfessorService } from './services/professor.service';
+import { CollegeService } from './services/college.service';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { User } from './models/user';
 import { ModeEnum } from './models/mode.enum';
+import { Professor } from './models/professor';
+import { College } from './models/college';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, ReactiveFormsModule],
+  imports: [RouterOutlet, ReactiveFormsModule, CommonModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit {
   private userService = inject(UserService);
+  private professorService = inject(ProfessorService);
+  private collegeService = inject(CollegeService);
   private fb = inject(FormBuilder);
   form = this.fb.group({
     id: [''],
     firstName: ['', Validators.required],
     lastName: ['', Validators.required],
-    collegeId: ['9CBEA81B-AADA-4F31-8250-467BB3A5C0AA'], 
+    collegeId: [''], 
+    professorId: [''], 
   });
   ModeEnum = ModeEnum;
   users!: User[];
+  professors!: Professor[];
+  colleges!: College[];
   mode = ModeEnum.NON;
 
   ngOnInit(): void {
     this.setUsers();
+    this.setProfessors();
+    this.setColleges();
   }
 
-  private setUsers() {
+  setUsers() {
     this.userService.getUsers().subscribe(students => 
       this.users = students
+    );
+  }
+
+  setProfessors() {
+    this.professorService.getProfessors().subscribe(professors =>
+      this.professors = professors
+    );
+  }
+
+  setColleges() {
+    this.collegeService.getColleges().subscribe(colleges =>
+      this.colleges = colleges
     );
   }
 
@@ -57,7 +81,8 @@ export class AppComponent implements OnInit {
       const userToCreate = {
         firstName: user.firstName,
         lastName: user.lastName,
-        collegeId: "9CBEA81B-AADA-4F31-8250-467BB3A5C0AA"
+        collegeId: user.collegeId,
+        professorId: user.professorId
       }
 
       this.userService.addUser(userToCreate).subscribe(x => this.setUsers());

@@ -8,9 +8,13 @@ namespace PruebaCrudColegio.Application
     public class StudentService : IStudentService
     {
         readonly IRepository<Student> _studentRepository;
+        readonly IRepository<College> _collegeRepository;
+        readonly IRepository<Professor> _professorRepository;
 
-        public StudentService(IRepository<Student> studentRepository) {
+        public StudentService(IRepository<Student> studentRepository, IRepository<College> collegeRepository, IRepository<Professor> professorRepository) {
             _studentRepository = studentRepository;
+            _collegeRepository = collegeRepository;
+            _professorRepository = professorRepository;
         }
         
         public async Task<Student> AddStudent(StudentDto studentDto)
@@ -35,12 +39,20 @@ namespace PruebaCrudColegio.Application
         public async Task<IList<StudentDto>> GetAllStudents()
         {
             var students = await _studentRepository.GetAllAsync();
-            return students.Select(x => new StudentDto()
+            return students.Select(x =>
             {
-                Id = x.Id,
-                FirstName = x.FirstName,
-                LastName = x.LastName,
-                CollegeId = x.CollegeId,
+                var professor = _professorRepository.GetById(x.ProfessorId);
+                var college = _collegeRepository.GetById(x.CollegeId);
+                return new StudentDto()
+                {
+                    Id = x.Id,
+                    FirstName = x.FirstName,
+                    LastName = x.LastName,
+                    CollegeId = x.CollegeId,
+                    CollegeName = college?.Name,
+                    ProfessorId = x.ProfessorId,
+                    ProfessorName = professor?.FirstName + " " + professor?.LastName,
+                };
             }).ToList();
         }
 
@@ -72,10 +84,13 @@ namespace PruebaCrudColegio.Application
         {
             return new Student()
             {
+                ProfessorId = studentDto.ProfessorId,
                 CollegeId = studentDto.CollegeId,
                 Id = studentDto.Id,
                 FirstName = studentDto.FirstName,
                 LastName = studentDto.LastName,
+                College = new College() { Name = string.Empty, Address = string.Empty },
+                Professor = new Professor() { FirstName = string.Empty, LastName = string.Empty, CollegeId = Guid.Empty, College = new College() { Name = string.Empty, Address = string.Empty } }
             };
         }
     }

@@ -2,7 +2,7 @@
 
 namespace PruebaCrudColegio.Core.Model
 {
-    public class Student : BaseEntity
+    public class Professor : BaseEntity
     {
         [Required]
         public required string FirstName { get; set; }
@@ -14,11 +14,7 @@ namespace PruebaCrudColegio.Core.Model
         public required Guid CollegeId { get; set; }
 
         public College College { get; set; }
-
-        [Required]
-        public required Guid ProfessorId { get; set; }
-
-        public Professor Professor { get; set; }
+        public List<Student>? Students { get; set; }
 
     }
 }
