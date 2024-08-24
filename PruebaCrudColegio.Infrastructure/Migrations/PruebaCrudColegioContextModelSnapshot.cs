@@ -60,9 +60,18 @@ namespace PruebaCrudColegio.Infrastructure.Migrations
                         {
                             Id = new Guid("9cbea81b-aada-4f31-8250-467bb3a5c0aa"),
                             Address = "Tucuman 868",
-                            DateCreated = new DateTimeOffset(new DateTime(2024, 8, 24, 2, 52, 54, 714, DateTimeKind.Unspecified).AddTicks(4768), new TimeSpan(0, -3, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2024, 8, 24, 4, 13, 58, 520, DateTimeKind.Unspecified).AddTicks(5048), new TimeSpan(0, -3, 0, 0, 0)),
                             IsDeleted = false,
                             Name = "Normal",
+                            UserId = new Guid("00000000-0000-0000-0000-000000000000")
+                        },
+                        new
+                        {
+                            Id = new Guid("5f85a554-16c7-4780-96aa-7dad227fb974"),
+                            Address = "Buenos Aires 80",
+                            DateCreated = new DateTimeOffset(new DateTime(2024, 8, 24, 4, 13, 58, 520, DateTimeKind.Unspecified).AddTicks(5090), new TimeSpan(0, -3, 0, 0, 0)),
+                            IsDeleted = false,
+                            Name = "Privada",
                             UserId = new Guid("00000000-0000-0000-0000-000000000000")
                         });
                 });
@@ -110,10 +119,20 @@ namespace PruebaCrudColegio.Infrastructure.Migrations
                         {
                             Id = new Guid("a0327b17-49d7-499f-97e1-cfd28df1b094"),
                             CollegeId = new Guid("9cbea81b-aada-4f31-8250-467bb3a5c0aa"),
-                            DateCreated = new DateTimeOffset(new DateTime(2024, 8, 24, 2, 52, 54, 714, DateTimeKind.Unspecified).AddTicks(4811), new TimeSpan(0, -3, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2024, 8, 24, 4, 13, 58, 520, DateTimeKind.Unspecified).AddTicks(5093), new TimeSpan(0, -3, 0, 0, 0)),
                             FirstName = "Alejandro",
                             IsDeleted = false,
                             LastName = "Lopez",
+                            UserId = new Guid("00000000-0000-0000-0000-000000000000")
+                        },
+                        new
+                        {
+                            Id = new Guid("9ba804fb-e068-4c49-8754-4beb6437de51"),
+                            CollegeId = new Guid("9cbea81b-aada-4f31-8250-467bb3a5c0aa"),
+                            DateCreated = new DateTimeOffset(new DateTime(2024, 8, 24, 4, 13, 58, 520, DateTimeKind.Unspecified).AddTicks(5095), new TimeSpan(0, -3, 0, 0, 0)),
+                            FirstName = "Angel",
+                            IsDeleted = false,
+                            LastName = "Perez",
                             UserId = new Guid("00000000-0000-0000-0000-000000000000")
                         });
                 });
@@ -164,9 +183,9 @@ namespace PruebaCrudColegio.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("8354da23-5f45-4080-a999-aa86bdf52b53"),
+                            Id = new Guid("d0d3f3a0-fdb3-418d-aecf-aaf451ffdd82"),
                             CollegeId = new Guid("9cbea81b-aada-4f31-8250-467bb3a5c0aa"),
-                            DateCreated = new DateTimeOffset(new DateTime(2024, 8, 24, 2, 52, 54, 714, DateTimeKind.Unspecified).AddTicks(4814), new TimeSpan(0, -3, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2024, 8, 24, 4, 13, 58, 520, DateTimeKind.Unspecified).AddTicks(5098), new TimeSpan(0, -3, 0, 0, 0)),
                             FirstName = "Lisandro",
                             IsDeleted = false,
                             LastName = "Test Description",

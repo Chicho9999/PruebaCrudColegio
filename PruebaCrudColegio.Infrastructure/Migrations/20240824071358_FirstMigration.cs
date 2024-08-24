@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace PruebaCrudColegio.Infrastructure.Migrations
 {
     /// <inheritdoc />
@@ -86,17 +88,25 @@ namespace PruebaCrudColegio.Infrastructure.Migrations
             migrationBuilder.InsertData(
                 table: "Colleges",
                 columns: new[] { "Id", "Address", "DateCreated", "DateDeleted", "DateUpdated", "IsDeleted", "Name", "UserId" },
-                values: new object[] { new Guid("9cbea81b-aada-4f31-8250-467bb3a5c0aa"), "Tucuman 868", new DateTimeOffset(new DateTime(2024, 8, 24, 2, 52, 54, 714, DateTimeKind.Unspecified).AddTicks(4768), new TimeSpan(0, -3, 0, 0, 0)), null, null, false, "Normal", new Guid("00000000-0000-0000-0000-000000000000") });
+                values: new object[,]
+                {
+                    { new Guid("5f85a554-16c7-4780-96aa-7dad227fb974"), "Buenos Aires 80", new DateTimeOffset(new DateTime(2024, 8, 24, 4, 13, 58, 520, DateTimeKind.Unspecified).AddTicks(5090), new TimeSpan(0, -3, 0, 0, 0)), null, null, false, "Privada", new Guid("00000000-0000-0000-0000-000000000000") },
+                    { new Guid("9cbea81b-aada-4f31-8250-467bb3a5c0aa"), "Tucuman 868", new DateTimeOffset(new DateTime(2024, 8, 24, 4, 13, 58, 520, DateTimeKind.Unspecified).AddTicks(5048), new TimeSpan(0, -3, 0, 0, 0)), null, null, false, "Normal", new Guid("00000000-0000-0000-0000-000000000000") }
+                });
 
             migrationBuilder.InsertData(
                 table: "Professors",
                 columns: new[] { "Id", "CollegeId", "DateCreated", "DateDeleted", "DateUpdated", "FirstName", "IsDeleted", "LastName", "UserId" },
-                values: new object[] { new Guid("a0327b17-49d7-499f-97e1-cfd28df1b094"), new Guid("9cbea81b-aada-4f31-8250-467bb3a5c0aa"), new DateTimeOffset(new DateTime(2024, 8, 24, 2, 52, 54, 714, DateTimeKind.Unspecified).AddTicks(4811), new TimeSpan(0, -3, 0, 0, 0)), null, null, "Alejandro", false, "Lopez", new Guid("00000000-0000-0000-0000-000000000000") });
+                values: new object[,]
+                {
+                    { new Guid("9ba804fb-e068-4c49-8754-4beb6437de51"), new Guid("9cbea81b-aada-4f31-8250-467bb3a5c0aa"), new DateTimeOffset(new DateTime(2024, 8, 24, 4, 13, 58, 520, DateTimeKind.Unspecified).AddTicks(5095), new TimeSpan(0, -3, 0, 0, 0)), null, null, "Angel", false, "Perez", new Guid("00000000-0000-0000-0000-000000000000") },
+                    { new Guid("a0327b17-49d7-499f-97e1-cfd28df1b094"), new Guid("9cbea81b-aada-4f31-8250-467bb3a5c0aa"), new DateTimeOffset(new DateTime(2024, 8, 24, 4, 13, 58, 520, DateTimeKind.Unspecified).AddTicks(5093), new TimeSpan(0, -3, 0, 0, 0)), null, null, "Alejandro", false, "Lopez", new Guid("00000000-0000-0000-0000-000000000000") }
+                });
 
             migrationBuilder.InsertData(
                 table: "Students",
                 columns: new[] { "Id", "CollegeId", "DateCreated", "DateDeleted", "DateUpdated", "FirstName", "IsDeleted", "LastName", "ProfessorId", "UserId" },
-                values: new object[] { new Guid("8354da23-5f45-4080-a999-aa86bdf52b53"), new Guid("9cbea81b-aada-4f31-8250-467bb3a5c0aa"), new DateTimeOffset(new DateTime(2024, 8, 24, 2, 52, 54, 714, DateTimeKind.Unspecified).AddTicks(4814), new TimeSpan(0, -3, 0, 0, 0)), null, null, "Lisandro", false, "Test Description", new Guid("a0327b17-49d7-499f-97e1-cfd28df1b094"), new Guid("00000000-0000-0000-0000-000000000000") });
+                values: new object[] { new Guid("d0d3f3a0-fdb3-418d-aecf-aaf451ffdd82"), new Guid("9cbea81b-aada-4f31-8250-467bb3a5c0aa"), new DateTimeOffset(new DateTime(2024, 8, 24, 4, 13, 58, 520, DateTimeKind.Unspecified).AddTicks(5098), new TimeSpan(0, -3, 0, 0, 0)), null, null, "Lisandro", false, "Test Description", new Guid("a0327b17-49d7-499f-97e1-cfd28df1b094"), new Guid("00000000-0000-0000-0000-000000000000") });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Professors_CollegeId",
