@@ -58,12 +58,28 @@
                    [class.is-invalid]="form.controls.lastName.invalid && form.controls.lastName.touched" />
           </div>
         </div>
-        <select class="form-control">
-          <option *ngFor="let college of this.colleges"
-                  [value]="college.id">
-            {{ college.name }}
-          </option>
-        </select>
+        <div class="mb-3 row">
+          <label for="collegeId" class="col-sm-2 col-form-label">College</label>
+          <div class="col-sm-10">
+            <select class="form-control" id="collegeId" formControlName="collegeId">
+              <option *ngFor="let college of this.colleges"
+                      [ngValue]="college.id">
+                {{ college.name }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="mb-3 row">
+          <label for="professorId" class="col-sm-2 col-form-label">Professor</label>
+          <div class="col-sm-10">
+            <select class="form-control" id="professorId" formControlName="professorId">
+              <option *ngFor="let professor of this.professors"
+                      [ngValue]="professor.id">
+                {{ professor.firstName }} {{professor.lastName}}
+              </option>
+            </select>
+          </div>
+        </div>
       </form>
     </div>
     <div class="card-footer d-flex justify-content-end">

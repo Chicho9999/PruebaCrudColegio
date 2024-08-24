@@ -71,6 +71,7 @@ namespace PruebaCrudColegio.Application
                 studentToEdit.FirstName = student.FirstName;
                 studentToEdit.LastName = student.LastName;
                 studentToEdit.CollegeId = student.CollegeId;
+                studentToEdit.ProfessorId = student.ProfessorId;
 
                 _studentRepository.Update(studentToEdit);
 
@@ -88,9 +89,7 @@ namespace PruebaCrudColegio.Application
                 CollegeId = studentDto.CollegeId,
                 Id = studentDto.Id,
                 FirstName = studentDto.FirstName,
-                LastName = studentDto.LastName,
-                College = new College() { Name = string.Empty, Address = string.Empty },
-                Professor = new Professor() { FirstName = string.Empty, LastName = string.Empty, CollegeId = Guid.Empty, College = new College() { Name = string.Empty, Address = string.Empty } }
+                LastName = studentDto.LastName
             };
         }
     }

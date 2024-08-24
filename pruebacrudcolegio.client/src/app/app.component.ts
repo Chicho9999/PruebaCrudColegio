@@ -27,8 +27,10 @@ export class AppComponent implements OnInit {
     id: [''],
     firstName: ['', Validators.required],
     lastName: ['', Validators.required],
-    collegeId: [''], 
-    professorId: [''], 
+    collegeId: ['', Validators.required], 
+    collegeName: [''], 
+    professorId: ['', Validators.required],
+    professorName: [''], 
   });
   ModeEnum = ModeEnum;
   users!: User[];
@@ -67,6 +69,7 @@ export class AppComponent implements OnInit {
   editUser(user: User) {
     this.mode = ModeEnum.EDIT;
     this.form.setValue(user);
+    var a = 0;
   }
 
   saveUser() {

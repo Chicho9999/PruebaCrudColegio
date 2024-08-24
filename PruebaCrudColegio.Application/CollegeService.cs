@@ -18,8 +18,8 @@ namespace PruebaCrudColegio.Application
             var colleges = await _collegeRepository.GetAllAsync();
             return colleges.Select(x => new CollegeDto()
             {
-                Name = x.Name,
-                Address = x.Address
+                Id = x.Id,
+                Name = x.Name
             }).ToList();
         }
     }
