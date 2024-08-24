@@ -1,7 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PruebaCrudColegio.Core.Model
 {
+    [Table("Professor")]
     public class Professor : BaseEntity
     {
         [Required]

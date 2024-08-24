@@ -19,7 +19,7 @@ namespace PruebaCrudColegio.Infrastructure.Repositories
             try
             {
                 await _DbSet.AddAsync(entity);
-                _pruebaCrudColegioContext.SaveChanges();
+                await _pruebaCrudColegioContext.SaveChangesAsync();
             }
             catch (DbUpdateException ex)
             {
@@ -30,11 +30,11 @@ namespace PruebaCrudColegio.Infrastructure.Repositories
             return entity;
         }
 
-        public bool Delete(T entity)
+        public async Task<bool> Delete(T entity)
         {
             try {
                 _DbSet.Remove(entity);
-                _pruebaCrudColegioContext.SaveChanges();
+                await _pruebaCrudColegioContext.SaveChangesAsync();
                 return true;
 
             }
@@ -75,7 +75,7 @@ namespace PruebaCrudColegio.Infrastructure.Repositories
             }
         }
 
-        public T? GetById(Guid id, params Expression<Func<T, object>>[] includes)
+        public async Task<T?> GetByIdAsync(Guid id, params Expression<Func<T, object>>[] includes)
         {
             try
             {
@@ -84,7 +84,7 @@ namespace PruebaCrudColegio.Infrastructure.Repositories
                     _DbSet.Include(include);
                 }
 
-                return _DbSet.Find(id);
+                return await _DbSet.FindAsync(id);
             }
             catch (NotSupportedException ex)
             {
@@ -93,12 +93,12 @@ namespace PruebaCrudColegio.Infrastructure.Repositories
             }
         }
 
-        public T Update(T entity)
+        public async Task<T> UpdateAsync(T entity)
         {
             try
             {
                 _pruebaCrudColegioContext.Entry(entity).State = EntityState.Modified;
-                _pruebaCrudColegioContext.SaveChanges();
+                await _pruebaCrudColegioContext.SaveChangesAsync();
                 return entity;
             }
             catch (DbUpdateException ex)

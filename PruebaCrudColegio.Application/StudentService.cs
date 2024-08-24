@@ -26,23 +26,32 @@ namespace PruebaCrudColegio.Application
             return student;
         }
 
-        public bool DeleteStudent(Guid id)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<bool> DeleteStudent(Guid id)
         {
-            var studentToDelete = _studentRepository.GetById(id);
+            var studentToDelete = await _studentRepository.GetByIdAsync(id);
             if (studentToDelete != null) { 
-                _studentRepository.Delete(studentToDelete);
+                await _studentRepository.Delete(studentToDelete);
                 return true;
             }
             return false;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public async Task<IList<StudentDto>> GetAllStudents()
         {
             var students = await _studentRepository.GetAllAsync();
             return students.Select(x =>
             {
-                var professor = _professorRepository.GetById(x.ProfessorId);
-                var college = _collegeRepository.GetById(x.CollegeId);
+                var professor = _professorRepository.GetByIdAsync(x.ProfessorId).Result;
+                var college = _collegeRepository.GetByIdAsync(x.CollegeId).Result;
                 return new StudentDto()
                 {
                     Id = x.Id,
@@ -56,16 +65,16 @@ namespace PruebaCrudColegio.Application
             }).ToList();
         }
 
-        public Student? GetStudentById(Guid id)
+        public async Task<Student?> GetStudentById(Guid id)
         {
-            return _studentRepository.GetById(id);
+            return await _studentRepository.GetByIdAsync(id);
         }
 
-        public Student? UpdateStudent(Guid id, StudentDto studentDto)
+        public async Task<Student?> UpdateStudent(Guid id, StudentDto studentDto)
         {
             var student = MapStudent(studentDto);
 
-            var studentToEdit = _studentRepository.GetById(id);
+            var studentToEdit = await _studentRepository.GetByIdAsync(id);
             if (studentToEdit != null)
             {
                 studentToEdit.FirstName = student.FirstName;
@@ -73,7 +82,7 @@ namespace PruebaCrudColegio.Application
                 studentToEdit.CollegeId = student.CollegeId;
                 studentToEdit.ProfessorId = student.ProfessorId;
 
-                _studentRepository.Update(studentToEdit);
+                await _studentRepository.UpdateAsync(studentToEdit);
 
                 return studentToEdit;
             }
