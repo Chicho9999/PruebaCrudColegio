@@ -8,10 +8,10 @@ namespace PruebaCrudColegio.Application
     public class StudentService : IStudentService
     {
         readonly IRepository<Student> _studentRepository;
-        readonly IRepository<College> _collegeRepository;
+        readonly IRepository<Grade> _collegeRepository;
         readonly IRepository<Professor> _professorRepository;
 
-        public StudentService(IRepository<Student> studentRepository, IRepository<College> collegeRepository, IRepository<Professor> professorRepository) {
+        public StudentService(IRepository<Student> studentRepository, IRepository<Grade> collegeRepository, IRepository<Professor> professorRepository) {
             _studentRepository = studentRepository;
             _collegeRepository = collegeRepository;
             _professorRepository = professorRepository;
@@ -51,14 +51,14 @@ namespace PruebaCrudColegio.Application
             return students.Select(x =>
             {
                 var professor = _professorRepository.GetByIdAsync(x.ProfessorId).Result;
-                var college = _collegeRepository.GetByIdAsync(x.CollegeId).Result;
+                var grade = _collegeRepository.GetByIdAsync(x.CollegeId).Result;
                 return new StudentDto()
                 {
                     Id = x.Id,
                     FirstName = x.FirstName,
                     LastName = x.LastName,
                     CollegeId = x.CollegeId,
-                    CollegeName = college?.Name,
+                    CollegeName = grade?.Name,
                     ProfessorId = x.ProfessorId,
                     ProfessorName = professor?.FirstName + " " + professor?.LastName,
                 };

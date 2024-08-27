@@ -17,7 +17,7 @@ builder.Services.AddScoped<IStudentService, StudentService>();
 builder.Services.AddScoped<ICollegeService, CollegeService>();
 builder.Services.AddScoped<IProfessorService, ProfessorService>();
 builder.Services.AddScoped<IRepository<Student>, Repository<Student>>();
-builder.Services.AddScoped<IRepository<College>, Repository<College>>();
+builder.Services.AddScoped<IRepository<Grade>, Repository<Grade>>();
 builder.Services.AddScoped<IRepository<Professor>, Repository<Professor>>();
 builder.Services.AddDbContext<PruebaCrudColegioContext>(options =>
 {

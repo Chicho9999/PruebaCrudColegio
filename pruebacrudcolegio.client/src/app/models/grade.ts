@@ -1,4 +1,4 @@
-export interface College {
+export interface Grade {
   id: string;
   name: string;
   address: string;

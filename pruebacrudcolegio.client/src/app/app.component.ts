@@ -3,12 +3,12 @@ import { Component, OnInit, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { UserService } from './services/user.service';
 import { ProfessorService } from './services/professor.service';
-import { CollegeService } from './services/college.service';
+import { CollegeService } from './services/grade.service';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { User } from './models/user';
 import { ModeEnum } from './models/mode.enum';
 import { Professor } from './models/professor';
-import { College } from './models/college';
+import { Grade } from './models/grade';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -35,7 +35,7 @@ export class AppComponent implements OnInit {
   ModeEnum = ModeEnum;
   users!: User[];
   professors!: Professor[];
-  colleges!: College[];
+  grades!: Grade[];
   mode = ModeEnum.NON;
 
   ngOnInit(): void {
@@ -57,8 +57,8 @@ export class AppComponent implements OnInit {
   }
 
   setColleges() {
-    this.collegeService.getColleges().subscribe(colleges =>
-      this.colleges = colleges
+    this.collegeService.getColleges().subscribe(grades =>
+      this.grades = grades
     );
   }
 

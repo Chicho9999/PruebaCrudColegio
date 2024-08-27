@@ -13,10 +13,10 @@ namespace PruebaCrudColegio.Core.Model
         public required string LastName { get; set; }
 
         [Required]
-        public required Guid CollegeId { get; set; }
+        [MaxLength(1)]
+        public required char Gender { get; set; }
 
-        public College College { get; set; }
-        public List<Student>? Students { get; set; }
+        public List<Grade> Grades { get; set; }
 
     }
 }

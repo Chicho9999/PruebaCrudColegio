@@ -7,16 +7,16 @@ namespace PruebaCrudColegio.Application
 {
     public class CollegeService : ICollegeService
     {
-        readonly IRepository<College> _collegeRepository;
+        readonly IRepository<Grade> _collegeRepository;
 
-        public CollegeService(IRepository<College> collegeRepository) {
+        public CollegeService(IRepository<Grade> collegeRepository) {
             _collegeRepository = collegeRepository;
         }
         
         public async Task<IList<CollegeDto>> GetAllColleges()
         {
-            var colleges = await _collegeRepository.GetAllAsync();
-            return colleges.Select(x => new CollegeDto()
+            var grades = await _collegeRepository.GetAllAsync();
+            return grades.Select(x => new CollegeDto()
             {
                 Id = x.Id,
                 Name = x.Name

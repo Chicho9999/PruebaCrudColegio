@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { College } from '../models/college';
+import { Grade } from '../models/grade';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({
@@ -7,10 +7,10 @@ import { HttpClient } from '@angular/common/http';
 })
 export class CollegeService {
   private http = inject(HttpClient);
-  private url = 'http://localhost:5053/api/College/';
-  private colleges : College[] = [];
+  private url = 'http://localhost:5053/api/Grade/';
+  private grades : Grade[] = [];
 
   getColleges() {
-    return this.http.get<College[]>(this.url);
+    return this.http.get<Grade[]>(this.url);
   }
 }

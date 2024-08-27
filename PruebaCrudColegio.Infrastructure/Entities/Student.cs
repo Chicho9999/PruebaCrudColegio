@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using PruebaCrudColegio.Infrastructure.Entities;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PruebaCrudColegio.Core.Model
@@ -13,14 +14,12 @@ namespace PruebaCrudColegio.Core.Model
         public required string LastName { get; set; }
 
         [Required]
-        public required Guid CollegeId { get; set; }
-
-        public College College { get; set; }
+        [MaxLength(1)]
+        public required char Gender { get; set; }
 
         [Required]
-        public required Guid ProfessorId { get; set; }
+        public DateTime BirthDay { get; set; }
 
-        public Professor Professor { get; set; }
-
+        public List<StudentGrade> Grades { get; set; }
     }
 }

@@ -1,3 +1,6 @@
+<app-navbar></app-navbar>
+
+<router-outlet></router-outlet>
 <div class="d-flex flex-column mt-4">
   <div class="card align-self-center w-50">
     <h4 class="card-header text-center">Student List</h4>
@@ -7,7 +10,7 @@
           <tr>
             <th scope="col">First Name</th>
             <th scope="col">Last Name</th>
-            <th scope="col">College</th>
+            <th scope="col">Grade</th>
             <th scope="col">Professor</th>
             <th scope="col"></th>
           </tr>
@@ -59,12 +62,12 @@
           </div>
         </div>
         <div class="mb-3 row">
-          <label for="collegeId" class="col-sm-2 col-form-label">College</label>
+          <label for="collegeId" class="col-sm-2 col-form-label">Grade</label>
           <div class="col-sm-10">
             <select class="form-control" id="collegeId" formControlName="collegeId">
-              <option *ngFor="let college of this.colleges"
-                      [ngValue]="college.id">
-                {{ college.name }}
+              <option *ngFor="let grade of this.grades"
+                      [ngValue]="grade.id">
+                {{ grade.name }}
               </option>
             </select>
           </div>
