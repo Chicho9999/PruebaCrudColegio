@@ -1,20 +1,26 @@
 ﻿using PruebaCrudColegio.Application.Dtos;
 using PruebaCrudColegio.Application.Interface;
 using PruebaCrudColegio.Core.Model;
+using PruebaCrudColegio.Infrastructure.Entities;
 using PruebaCrudColegio.Infrastructure.Repositories.Interface;
 
 namespace PruebaCrudColegio.Application
 {
     public class StudentService : IStudentService
     {
-        readonly IRepository<Student> _studentRepository;
-        readonly IRepository<Grade> _collegeRepository;
-        readonly IRepository<Professor> _professorRepository;
+        private readonly IRepository<Student> _studentRepository;
+        private readonly IRepository<Grade> _collegeRepository;
+        private readonly IRepository<Professor> _professorRepository;
+        private readonly IRepository<StudentGrade> _studentGradeRepository;
 
-        public StudentService(IRepository<Student> studentRepository, IRepository<Grade> collegeRepository, IRepository<Professor> professorRepository) {
+        public StudentService(IRepository<Student> studentRepository,
+                              IRepository<Grade> collegeRepository,
+                              IRepository<Professor> professorRepository,
+                              IRepository<StudentGrade> studentGradeRepository) {
             _studentRepository = studentRepository;
             _collegeRepository = collegeRepository;
             _professorRepository = professorRepository;
+            _studentGradeRepository = studentGradeRepository;
         }
         
         public async Task<Student> AddStudent(StudentDto studentDto)
@@ -48,19 +54,15 @@ namespace PruebaCrudColegio.Application
         public async Task<IList<StudentDto>> GetAllStudents()
         {
             var students = await _studentRepository.GetAllAsync();
-            return students.Select(x =>
+            return students.Select(student =>
             {
-                var professor = _professorRepository.GetByIdAsync(x.ProfessorId).Result;
-                var grade = _collegeRepository.GetByIdAsync(x.CollegeId).Result;
                 return new StudentDto()
                 {
-                    Id = x.Id,
-                    FirstName = x.FirstName,
-                    LastName = x.LastName,
-                    CollegeId = x.CollegeId,
-                    CollegeName = grade?.Name,
-                    ProfessorId = x.ProfessorId,
-                    ProfessorName = professor?.FirstName + " " + professor?.LastName,
+                    Id = student.Id,
+                    FirstName = student.FirstName,
+                    LastName = student.LastName,
+                    Gender = student.Gender,
+                    BirthDay = student.BirthDay,
                 };
             }).ToList();
         }
@@ -79,8 +81,8 @@ namespace PruebaCrudColegio.Application
             {
                 studentToEdit.FirstName = student.FirstName;
                 studentToEdit.LastName = student.LastName;
-                studentToEdit.CollegeId = student.CollegeId;
-                studentToEdit.ProfessorId = student.ProfessorId;
+                studentToEdit.Gender = student.Gender;
+                studentToEdit.BirthDay = student.BirthDay;
 
                 await _studentRepository.UpdateAsync(studentToEdit);
 
@@ -94,11 +96,11 @@ namespace PruebaCrudColegio.Application
         {
             return new Student()
             {
-                ProfessorId = studentDto.ProfessorId,
-                CollegeId = studentDto.CollegeId,
                 Id = studentDto.Id,
                 FirstName = studentDto.FirstName,
-                LastName = studentDto.LastName
+                LastName = studentDto.LastName,
+                Gender = studentDto.Gender,
+                BirthDay = studentDto.BirthDay,
             };
         }
     }

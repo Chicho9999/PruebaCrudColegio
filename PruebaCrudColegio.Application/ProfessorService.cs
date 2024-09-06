@@ -21,7 +21,6 @@ namespace PruebaCrudColegio.Application
                 Id = x.Id,
                 FirstName = x.FirstName,
                 LastName = x.LastName,
-                CollegeId = x.CollegeId,
             }).ToList();
         }
     }
