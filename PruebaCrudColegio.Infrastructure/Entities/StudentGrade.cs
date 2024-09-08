@@ -1,13 +1,13 @@
-﻿using PruebaCrudColegio.Core.Model;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace PruebaCrudColegio.Infrastructure.Entities
+namespace PruebaCrudColegio.Core.Model
 {
+    [Table("StudentGrade")]
     public class StudentGrade : BaseEntity
     {
-        public Guid? GradeId { get; set; }
+        public Guid GradeId { get; set; }
 
-        public Guid? StudentId { get; set; }
+        public Guid StudentId { get; set; }
 
         public Student? Student { get; set; }
 

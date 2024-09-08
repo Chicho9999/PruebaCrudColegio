@@ -63,7 +63,7 @@ export class StudentComponent implements OnInit {
     this.form.setValue(user);
   }
 
-  seeGrades(viewUserTemplate: any, userId: string) {
+  seeGrades(userId: string) {
     this.modalService.openModal(GradeComponent, userId, false);
   }
 

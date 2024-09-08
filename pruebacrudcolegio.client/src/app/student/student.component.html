@@ -21,7 +21,7 @@
             <td>{{ user.gender }}</td>
             <td>{{ user.birthday }}</td>
             <td>
-              <button type="button" class="btn btn-sm btn-danger me-1" (click)="seeGrades(myModalContent, user.id)">
+              <button type="button" class="btn btn-sm btn-warning me-1" (click)="seeGrades(user.id)">
                 Grades
               </button>
             </td>
@@ -65,9 +65,9 @@
           </div>
         </div>
         <div class="mb-3 row">
-          <label for="collegeId" class="col-sm-2 col-form-label">Grade</label>
+          <label for="gradeId" class="col-sm-2 col-form-label">Grade</label>
           <div class="col-sm-10">
-            <select class="form-control" id="collegeId" formControlName="collegeId">
+            <select class="form-control" id="gradeId" formControlName="gradeId">
               <option *ngFor="let grade of this.grades"
                       [value]="grade.id">
                 {{ grade.name }}
@@ -99,20 +99,3 @@
   </div>
   }
 </div>
-
-<ng-template #myModalContent let-modal>
-
-  <div class="modal-header">
-    <button type="button" class="close" (click)="modal.dismiss()">
-      <span>&times;</span>
-    </button>
-  </div>
-
-  <div class="modal-body">
-  </div>
-
-  <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="modal.close()">Close</button>
-  </div>
-
-</ng-template>

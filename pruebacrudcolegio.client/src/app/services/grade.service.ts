@@ -14,6 +14,6 @@ export class GradeService {
   }
 
   getGradesByUserId(userId: string) {
-    return this.http.get<Grade[]>(`${this.url}${userId}`);
+    return this.http.get<Grade[]>(`${this.url}ByStudentId/${userId}`);
   }
 }

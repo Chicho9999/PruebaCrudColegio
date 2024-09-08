@@ -12,13 +12,20 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+//Context
 builder.Services.AddScoped<PruebaCrudColegioContext>();
+
+//Services
 builder.Services.AddScoped<IStudentService, StudentService>();
-builder.Services.AddScoped<ICollegeService, CollegeService>();
+builder.Services.AddScoped<IGradeService, GradeService>();
 builder.Services.AddScoped<IProfessorService, ProfessorService>();
+
+//Repositories
 builder.Services.AddScoped<IRepository<Student>, Repository<Student>>();
 builder.Services.AddScoped<IRepository<Grade>, Repository<Grade>>();
+builder.Services.AddScoped<IRepository<StudentGrade>, Repository<StudentGrade>>();
 builder.Services.AddScoped<IRepository<Professor>, Repository<Professor>>();
+
 builder.Services.AddDbContext<PruebaCrudColegioContext>(options =>
 {
     options.UseSqlServer();

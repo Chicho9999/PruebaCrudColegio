@@ -1,7 +1,6 @@
 ﻿using PruebaCrudColegio.Application.Dtos;
 using PruebaCrudColegio.Application.Interface;
 using PruebaCrudColegio.Core.Model;
-using PruebaCrudColegio.Infrastructure.Entities;
 using PruebaCrudColegio.Infrastructure.Repositories.Interface;
 
 namespace PruebaCrudColegio.Application
@@ -9,16 +8,16 @@ namespace PruebaCrudColegio.Application
     public class StudentService : IStudentService
     {
         private readonly IRepository<Student> _studentRepository;
-        private readonly IRepository<Grade> _collegeRepository;
+        private readonly IRepository<Grade> _gradeRepository;
         private readonly IRepository<Professor> _professorRepository;
         private readonly IRepository<StudentGrade> _studentGradeRepository;
 
         public StudentService(IRepository<Student> studentRepository,
-                              IRepository<Grade> collegeRepository,
+                              IRepository<Grade> gradeRepository,
                               IRepository<Professor> professorRepository,
                               IRepository<StudentGrade> studentGradeRepository) {
             _studentRepository = studentRepository;
-            _collegeRepository = collegeRepository;
+            _gradeRepository = gradeRepository;
             _professorRepository = professorRepository;
             _studentGradeRepository = studentGradeRepository;
         }

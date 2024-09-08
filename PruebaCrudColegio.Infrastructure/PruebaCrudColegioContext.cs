@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using PruebaCrudColegio.Core.Model;
-using PruebaCrudColegio.Infrastructure.Entities;
 using PruebaCrudColegio.Infrastructure.Enums;
 
 namespace PruebaCrudColegio.Infrastructure
@@ -35,13 +34,6 @@ namespace PruebaCrudColegio.Infrastructure
                 .OnDelete(DeleteBehavior.NoAction)
                 .IsRequired();
 
-            modelBuilder.Entity<StudentGrade>()
-                .HasOne(e => e.Student)
-                .WithMany(e => e.Grades)
-                .HasForeignKey(e => e.StudentId)
-                .OnDelete(DeleteBehavior.NoAction)
-                .IsRequired();
-
             modelBuilder.Entity<Professor>()
                 .HasMany(e => e.Grades)
                 .WithOne(e => e.Professor)
@@ -50,11 +42,18 @@ namespace PruebaCrudColegio.Infrastructure
                 .IsRequired();
 
             modelBuilder.Entity<StudentGrade>()
-                .HasOne(e => e.Grade)
-                .WithMany(e => e.Students)
-                .HasForeignKey(e => e.GradeId)
-                .OnDelete(DeleteBehavior.NoAction)
-                .IsRequired();
+            .HasKey(t => new { t.StudentId, t.GradeId });
+
+            modelBuilder.Entity<StudentGrade>()
+                .HasOne(pt => pt.Student)
+                .WithMany(p => p.Grades)
+                .HasForeignKey(pt => pt.StudentId);
+
+            modelBuilder.Entity<StudentGrade>()
+                .HasOne(pt => pt.Grade)
+                .WithMany(p => p.Students)
+                .HasForeignKey(pt => pt.GradeId);
+
 
             var professor1 = new Professor
             {
@@ -72,14 +71,14 @@ namespace PruebaCrudColegio.Infrastructure
                 Gender = GenderEnum.Femenino
             };
 
-            var college1 = new Grade
+            var grade1 = new Grade
             {
                 Id = Guid.Parse("9cbea81b-aada-4f31-8250-467bb3a5c0aa"),
                 Name = "Normal",
                 ProfessorId = professor1.Id,
             };
 
-            var college2 = new Grade
+            var grade2 = new Grade
             {
                 Id = Guid.Parse("5f85a554-16c7-4780-96aa-7dad227fb974"),
                 Name = "Privada",
@@ -88,33 +87,47 @@ namespace PruebaCrudColegio.Infrastructure
 
             var student1 = new Student()
             {
+                Id = Guid.Parse("0b6682c4-0841-4612-b1fd-4a9d565543e2"),
                 FirstName = "Carlos",
                 LastName = "Chichi",
                 Gender = GenderEnum.Masculino,
+                BirthDay = DateTime.Parse("01/01/1995")
             };
 
             var student2 = new Student()
             {
+                Id = Guid.Parse("f4e9bc25-f21e-473a-bdd3-cee5cacbdf2e"),
                 FirstName = "Antonella",
                 LastName = "Perez",
                 Gender = GenderEnum.Femenino,
+                BirthDay = DateTime.Parse("05/02/1993")
             };
 
-            var studentGrade = new StudentGrade
+            var studentGrade1 = new StudentGrade
             {
                 Id = Guid.NewGuid(),
-                GradeId = college1.Id,
+                GradeId = grade1.Id,
                 StudentId = student1.Id,
                 Section = 1
             };
 
-            modelBuilder.Entity<Grade>().HasData(college1);
-            modelBuilder.Entity<Grade>().HasData(college2);
+
+            var studentGrade2 = new StudentGrade
+            {
+                Id = Guid.NewGuid(),
+                GradeId = grade2.Id,
+                StudentId = student1.Id,
+                Section = 2
+            };
+
+            modelBuilder.Entity<Grade>().HasData(grade1);
+            modelBuilder.Entity<Grade>().HasData(grade2);
             modelBuilder.Entity<Professor>().HasData(professor1);
             modelBuilder.Entity<Professor>().HasData(professor2);
             modelBuilder.Entity<Student>().HasData(student1);
             modelBuilder.Entity<Student>().HasData(student2);
-            modelBuilder.Entity<StudentGrade>().HasData(studentGrade);
+            modelBuilder.Entity<StudentGrade>().HasData(studentGrade1);
+            modelBuilder.Entity<StudentGrade>().HasData(studentGrade2);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
