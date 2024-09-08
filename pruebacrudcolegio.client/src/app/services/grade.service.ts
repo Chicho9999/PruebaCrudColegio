@@ -5,12 +5,15 @@ import { HttpClient } from '@angular/common/http';
 @Injectable({
   providedIn: 'root',
 })
-export class CollegeService {
+export class GradeService {
   private http = inject(HttpClient);
   private url = 'http://localhost:5053/api/Grade/';
-  private grades : Grade[] = [];
 
-  getColleges() {
+  getGrades() {
     return this.http.get<Grade[]>(this.url);
+  }
+
+  getGradesByUserId(userId: string) {
+    return this.http.get<Grade[]>(`${this.url}${userId}`);
   }
 }

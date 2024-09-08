@@ -7,8 +7,9 @@
           <tr>
             <th scope="col">First Name</th>
             <th scope="col">Last Name</th>
-            <th scope="col">Grade</th>
-            <th scope="col">Professor</th>
+            <th scope="col">Gender</th>
+            <th scope="col">Birthday</th>
+            <th scope="col">Grades</th>
             <th scope="col"></th>
           </tr>
         </thead>
@@ -17,8 +18,13 @@
           <tr>
             <td>{{ user.firstName }}</td>
             <td>{{ user.lastName }}</td>
-            <td>{{ user.collegeName }}</td>
-            <td>{{ user.professorName }}</td>
+            <td>{{ user.gender }}</td>
+            <td>{{ user.birthday }}</td>
+            <td>
+              <button type="button" class="btn btn-sm btn-danger me-1" (click)="seeGrades(myModalContent, user.id)">
+                Grades
+              </button>
+            </td>
             <td>
               <button type="button" class="btn btn-sm btn-primary me-1" (click)="editUser(user)">
                 Edit
@@ -93,3 +99,20 @@
   </div>
   }
 </div>
+
+<ng-template #myModalContent let-modal>
+
+  <div class="modal-header">
+    <button type="button" class="close" (click)="modal.dismiss()">
+      <span>&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.close()">Close</button>
+  </div>
+
+</ng-template>

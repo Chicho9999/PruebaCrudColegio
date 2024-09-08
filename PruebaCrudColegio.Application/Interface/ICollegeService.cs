@@ -4,6 +4,6 @@ namespace PruebaCrudColegio.Application.Interface
 {
     public interface ICollegeService
     {
-        Task<IList<CollegeDto>> GetAllColleges();
+        Task<IList<CollegeDto>> GetAllGrades();
     }
 }

@@ -13,7 +13,7 @@ namespace PruebaCrudColegio.Application
             _collegeRepository = collegeRepository;
         }
         
-        public async Task<IList<CollegeDto>> GetAllColleges()
+        public async Task<IList<CollegeDto>> GetAllGrades()
         {
             var grades = await _collegeRepository.GetAllAsync();
             return grades.Select(x => new CollegeDto()

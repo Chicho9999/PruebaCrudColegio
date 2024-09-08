@@ -17,7 +17,7 @@ namespace PruebaCrudColegio.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllAsync()
         {
-            var grades = await _collegeService.GetAllColleges();
+            var grades = await _collegeService.GetAllGrades();
 
             return Ok(grades);
         }

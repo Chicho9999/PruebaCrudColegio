@@ -16,7 +16,7 @@ namespace PruebaCrudColegio.Infrastructure
         }
 
         public DbSet<Student> Students { get; set; }
-        public DbSet<Grade> Colleges  { get; set; }
+        public DbSet<Grade> Grades  { get; set; }
         public DbSet<Professor> Professors  { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
