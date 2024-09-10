@@ -15,6 +15,7 @@ namespace PruebaCrudColegio.Infrastructure
         }
 
         public DbSet<Student> Students { get; set; }
+        public DbSet<StudentGrade> StudentGrades { get; set; }
         public DbSet<Grade> Grades  { get; set; }
         public DbSet<Professor> Professors  { get; set; }
 
@@ -91,7 +92,7 @@ namespace PruebaCrudColegio.Infrastructure
                 FirstName = "Carlos",
                 LastName = "Chichi",
                 Gender = GenderEnum.Masculino,
-                BirthDay = DateTime.Parse("01/01/1995")
+                BirthDay = DateTime.Parse("1995-01-08")
             };
 
             var student2 = new Student()
@@ -100,7 +101,7 @@ namespace PruebaCrudColegio.Infrastructure
                 FirstName = "Antonella",
                 LastName = "Perez",
                 Gender = GenderEnum.Femenino,
-                BirthDay = DateTime.Parse("05/02/1993")
+                BirthDay = DateTime.Parse("1993-05-11")
             };
 
             var studentGrade1 = new StudentGrade

@@ -1,26 +1,35 @@
-import { Component, OnInit, TemplateRef, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { StudentService } from '../services/user.service';
-import { GradeService } from '../services/grade.service';
 import { ModeEnum } from '../models/mode.enum';
 import { Student } from '../models/student';
 import { Professor } from '../models/professor';
-import { Grade } from '../models/grade';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { GradeComponent } from '../grade/grade.component';
 import { ModalService } from '../services/modal.service';
+import { StudentService } from '../services/user.service';
+import { CommonModule, formatDate } from '@angular/common';
+import { StudentGradeService } from '../services/studentGrade.service';
+import { StudentGrade } from '../models/studentGrade';
 
 @Component({
   selector: 'app-student',
   standalone: true,
-  imports: [ReactiveFormsModule, NavbarComponent, GradeComponent],
+  imports: [ReactiveFormsModule, NavbarComponent, GradeComponent, CommonModule],
   templateUrl: './student.component.html',  
   styleUrl: './student.component.css'
 })
 
 export class StudentComponent implements OnInit {
+  ModeEnum = ModeEnum;
+  students!: Student[];
+  professors!: Professor[];
+  grades!: StudentGrade[];
+  studentGrades!: StudentGrade[];
+  mode = ModeEnum.NON;
+  studentId!: string;
+
   private studentService = inject(StudentService);
-  private gradeService = inject(GradeService);
+  private gradeService = inject(StudentGradeService);
   private modalService = inject(ModalService);
   private formBuilder = inject(FormBuilder);
 
@@ -29,72 +38,64 @@ export class StudentComponent implements OnInit {
     firstName: ['', Validators.required],
     lastName: ['', Validators.required],
     gender: ['', Validators.required],
-    birthday: ['', Validators.required],
+    birthDay: [formatDate(new Date(), 'dd-MM-yyyy', 'en'), [Validators.required]]
   });
 
-  ModeEnum = ModeEnum;
-  users!: Student[];
-  professors!: Professor[];
-  grades!: Grade[];
-  mode = ModeEnum.NON;
-
   ngOnInit(): void {
-    this.setUsers();
+    this.setStudents();
   }
 
-  setUsers() {
-    this.studentService.getUsers().subscribe(students =>
-      this.users = students
+  setStudents() {
+    this.studentService.getStudents().subscribe(students =>
+      this.students = students
     );
   }
 
-  setGrades() {
-    this.gradeService.getGrades().subscribe(grades =>
-      this.grades = grades
-    );
+  setGradesByUserId(studentId: string): StudentGrade[] {
+    this.gradeService.getStudentGradesByUserId(studentId).subscribe(grades => this.grades = grades);
+    return this.grades;
   }
 
-  addNewUser() {
+  addNewStudent() {
     this.mode = ModeEnum.ADD;
   }
 
-  editUser(user: Student) {
+  editStudent(student: Student) {
     this.mode = ModeEnum.EDIT;
-    this.form.setValue(user);
+    this.studentId = student.id;
+    this.studentGrades = this.setGradesByUserId(student.id)
+    this.form.setValue(student);
   }
 
-  seeGrades(userId: string) {
-    this.modalService.openModal(GradeComponent, userId, false);
+  seeGrades(studentId: string, isEditting: boolean) {
+    this.modalService.openModal(GradeComponent, studentId, isEditting);
   }
 
-  closeModalFunction() {
-  }
-
-  saveUser() {
+  saveStudent() {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
     }
-    const user = this.form.value as Student;
+    const student = this.form.value as Student;
 
     if (this.mode === ModeEnum.ADD) {
 
-      const userToCreate = {
-        firstName: user.firstName,
-        lastName: user.lastName,
-        gender: user.gender,
-        birthday: user.birthday
+      const studentToCreate = {
+        firstName: student.firstName,
+        lastName: student.lastName,
+        gender: student.gender,
+        birthday: student.birthDay
       }
 
-      this.studentService.addUser(userToCreate).subscribe(x => this.setUsers());
+      this.studentService.addStudent(studentToCreate).subscribe(x => this.setStudents());
     } else {
-      this.studentService.updateUser(user).subscribe(x => this.setUsers());
+      this.studentService.updateStudent(student).subscribe(x => this.setStudents());
     }
     this.cancel();
   }
 
-  removeUser(user: Student) {
-    this.studentService.deleteUser(user.id).subscribe(x => this.setUsers());
+  removeStudent(student: Student) {
+    this.studentService.deleteStudent(student.id).subscribe(x => this.setStudents());
   }
 
   cancel() {

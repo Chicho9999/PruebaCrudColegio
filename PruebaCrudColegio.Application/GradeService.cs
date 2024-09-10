@@ -19,27 +19,34 @@ namespace PruebaCrudColegio.Application
             _studentGradeRepository = studentGradeRepository;
             _profressorRepository = profressorRepository;
         }
-        
+
         public async Task<IList<GradeDto>> GetAllGrades()
         {
             var grades = await _gradeRepository.GetAllAsync();
-            return grades.Select(x => new GradeDto()
+            return grades.Select(grade =>
             {
-                Id = x.Id,
-                Name = x.Name
+                var professor = _profressorRepository.GetByIdAsync(grade.ProfessorId).Result;
+                return new GradeDto()
+                {
+                    Id = grade.Id,
+                    Name = grade.Name,
+                    ProfessorId = professor.Id,
+                    ProfessorName = professor.FirstName + " " + professor.LastName
+                };
+
             }).ToList();
         }
 
-        public async Task<IList<GradeDto>> GetAllGradesByUserId(Guid studentId)
+        public async Task<IList<GradeDto>> GetAllGradesByProfessorId(Guid professorId)
         {
-            var studentGrades = await _studentGradeRepository.GetWhere(grade => grade.StudentId == studentId);
-            return studentGrades.Select(studentGrade =>
+            var grades = await _gradeRepository.GetWhere(grade => grade.ProfessorId == professorId);
+            return grades.Select(grade =>
             {
-                var grade = _gradeRepository.GetByIdAsync(studentGrade.GradeId).Result;
                 var professor = _profressorRepository.GetByIdAsync(grade.ProfessorId).Result;
 
                 return new GradeDto()
                 {
+                    Id = grade.Id,
                     Name = grade.Name,
                     ProfessorName = professor.FirstName + " " + professor.LastName
                 };

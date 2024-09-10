@@ -12,7 +12,11 @@ export class ModalService {
       isEditing
     }
 
-    this._dialog.open(componentRef, { data: config, width: '600px' });
+    this._dialog.open(componentRef, {
+      data: config,
+      height: '300px',
+      width: '800px'
+    });
   }
   closeModal(): void {
     this._dialog.closeAll();

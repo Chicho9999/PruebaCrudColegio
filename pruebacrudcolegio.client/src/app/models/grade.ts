@@ -1,5 +1,6 @@
 export interface Grade {
   id: string;
   name: string;
-  address: string;
+  professorName: string;
+  professorId: string;
 }

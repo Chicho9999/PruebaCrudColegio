@@ -61,7 +61,7 @@ namespace PruebaCrudColegio.Application
                     FirstName = student.FirstName,
                     LastName = student.LastName,
                     Gender = student.Gender,
-                    BirthDay = student.BirthDay,
+                    BirthDay = student.BirthDay.ToShortDateString(),
                 };
             }).ToList();
         }
@@ -99,7 +99,7 @@ namespace PruebaCrudColegio.Application
                 FirstName = studentDto.FirstName,
                 LastName = studentDto.LastName,
                 Gender = studentDto.Gender,
-                BirthDay = studentDto.BirthDay,
+                BirthDay = DateTime.Parse(studentDto.BirthDay),
             };
         }
     }

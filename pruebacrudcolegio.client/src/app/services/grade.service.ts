@@ -13,7 +13,11 @@ export class GradeService {
     return this.http.get<Grade[]>(this.url);
   }
 
-  getGradesByUserId(userId: string) {
-    return this.http.get<Grade[]>(`${this.url}ByStudentId/${userId}`);
+  getGradesByUserId(studentId: string) {
+    return this.http.get<Grade[]>(`${this.url}ByStudentId/${studentId}`);
+  }
+
+  saveGrades(gradesByStudent: Grade[], studentId: string) {
+    return this.http.put<Grade[]>(`${this.url}updateGrades/${studentId}`, gradesByStudent);
   }
 }

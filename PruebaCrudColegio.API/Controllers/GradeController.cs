@@ -23,10 +23,10 @@ namespace PruebaCrudColegio.API.Controllers
         }
 
         [HttpGet]
-        [Route("ByStudentId/{id}")]
-        public async Task<IActionResult> GetGradesByStudentId(Guid id)
+        [Route("ByProfessorId/{id}")]
+        public async Task<IActionResult> GetGradesByProfessorId(Guid id)
         {
-            var grades = await _gradeService.GetAllGradesByUserId(id);
+            var grades = await _gradeService.GetAllGradesByProfessorId(id);
 
             return Ok(grades);
         }

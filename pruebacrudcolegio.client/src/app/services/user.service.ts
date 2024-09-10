@@ -10,19 +10,19 @@ export class StudentService {
   private http = inject(HttpClient);
   private url = 'http://localhost:5053/api/Student/';
 
-  getUsers() {
+  getStudents() {
     return this.http.get<Student[]>(this.url);
   }
 
-  addUser(user: any): Observable<Student>{
+  addStudent(user: any): Observable<Student>{
     return this.http.post<Student>(this.url, user)
   }
 
-  updateUser(user: Student): Observable<Student>{
+  updateStudent(user: Student): Observable<Student>{
     return this.http.put<Student>(this.url, user)
   }
 
-  deleteUser(userId: string) {
+  deleteStudent(userId: string) {
     return this.http.delete(`${this.url}${userId}`);
   }
 }

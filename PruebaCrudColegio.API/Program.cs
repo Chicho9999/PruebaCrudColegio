@@ -17,6 +17,7 @@ builder.Services.AddScoped<PruebaCrudColegioContext>();
 
 //Services
 builder.Services.AddScoped<IStudentService, StudentService>();
+builder.Services.AddScoped<IStudentGradeService, StudentGradeService>();
 builder.Services.AddScoped<IGradeService, GradeService>();
 builder.Services.AddScoped<IProfessorService, ProfessorService>();
 
