@@ -18,7 +18,6 @@ import { StudentService } from '../services/user.service';
 export class GradeComponent implements OnInit {
 
   private readonly modalService = inject(ModalService);
-  private readonly studentGradeService = inject(StudentGradeService);
   private readonly gradeService = inject(GradeService);
   matDialog = inject(MAT_DIALOG_DATA);
   gradesByStudent!: StudentGrade[];
@@ -28,7 +27,7 @@ export class GradeComponent implements OnInit {
 
   ngOnInit(): void {
     this.section = 1;
-    this.GetGradesByUser(this.matDialog.data);
+    this.gradesByStudent = this.matDialog.data.grades;
     if (this.matDialog.isEditing) {
       this.GetAllGrades();
     }
@@ -45,12 +44,6 @@ export class GradeComponent implements OnInit {
     this.modalService.closeModal();
   };
 
-  GetGradesByUser(userId: string) {
-    this.studentGradeService.getStudentGradesByUserId(userId).subscribe(
-      grades => this.gradesByStudent = grades
-    );
-  }
-
   updateGradeSelected($event: any) {
     this.selectedGrade = this.grades.find(g => g.id == $event.target.value);
   }
@@ -64,7 +57,7 @@ export class GradeComponent implements OnInit {
       if (!this.gradesByStudent.some(x => x.gradeId == this.selectedGrade?.id && x.studentId == this.matDialog.data)) {
         var newGrade = {
           id: '00000000-0000-0000-0000-000000000000',
-          studentId: this.matDialog.data,
+          studentId: this.matDialog.data ? this.matDialog.data.id : '00000000-0000-0000-0000-000000000000',
           gradeId: this.selectedGrade.id,
           professorId: this.selectedGrade.professorId,
           gradeName: this.selectedGrade.name,
@@ -74,9 +67,6 @@ export class GradeComponent implements OnInit {
         this.gradesByStudent.push(newGrade as StudentGrade);
       }
     }
-  }
-  saveGrades() {
-    this.studentGradeService.saveStudentGrades(this.gradesByStudent, this.matDialog.data).subscribe(x => this.exitModal());
   }
 
   removeGrade(grade: StudentGrade) {

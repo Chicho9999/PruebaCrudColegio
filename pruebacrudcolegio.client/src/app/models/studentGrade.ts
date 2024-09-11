@@ -3,7 +3,7 @@ export interface StudentGrade {
   professorName: string;
   professorId: string;
   section: number;
-  studentId: string;
+  studentId?: string;
   studentName: string;
   gradeId: string;
   gradeName: string;

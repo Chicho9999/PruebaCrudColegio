@@ -14,12 +14,12 @@ export class StudentService {
     return this.http.get<Student[]>(this.url);
   }
 
-  addStudent(user: any): Observable<Student>{
-    return this.http.post<Student>(this.url, user)
+  addStudent(student: any): Observable<Student>{
+    return this.http.post<Student>(this.url, student)
   }
 
-  updateStudent(user: Student): Observable<Student>{
-    return this.http.put<Student>(this.url, user)
+  updateStudent(student: Student): Observable<Student>{
+    return this.http.put<Student>(this.url, student)
   }
 
   deleteStudent(userId: string) {

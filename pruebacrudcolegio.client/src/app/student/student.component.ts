@@ -22,9 +22,9 @@ import { StudentGrade } from '../models/studentGrade';
 export class StudentComponent implements OnInit {
   ModeEnum = ModeEnum;
   students!: Student[];
+  studentToEdit!: Student;
   professors!: Professor[];
   grades!: StudentGrade[];
-  studentGrades!: StudentGrade[];
   mode = ModeEnum.NON;
   studentId!: string;
 
@@ -46,29 +46,34 @@ export class StudentComponent implements OnInit {
   }
 
   setStudents() {
-    this.studentService.getStudents().subscribe(students =>
+    this.studentService.getStudents().subscribe(students => {
+      for (var i = 0; i < students.length; i++) {
+        var currentStudent = students[i];
+        this.setGradesByUserId(currentStudent);
+      }
       this.students = students
-    );
+    });
   }
 
-  setGradesByUserId(studentId: string): StudentGrade[] {
-    this.gradeService.getStudentGradesByUserId(studentId).subscribe(grades => this.grades = grades);
+  setGradesByUserId(student: Student): StudentGrade[] {
+    this.gradeService.getStudentGradesByUserId(student.id).subscribe(grades => student.grades = grades);
     return this.grades;
   }
 
   addNewStudent() {
     this.mode = ModeEnum.ADD;
+    this.studentToEdit = {} as Student;
+    this.studentToEdit.grades = [] as StudentGrade[];
   }
 
   editStudent(student: Student) {
     this.mode = ModeEnum.EDIT;
-    this.studentId = student.id;
-    this.studentGrades = this.setGradesByUserId(student.id)
+    this.studentToEdit = student;
     this.form.setValue(student);
   }
 
-  seeGrades(studentId: string, isEditting: boolean) {
-    this.modalService.openModal(GradeComponent, studentId, isEditting);
+  seeGrades(student: Student, isEditting: boolean) {
+    this.modalService.openModal(GradeComponent, student, isEditting);
   }
 
   saveStudent() {
@@ -77,19 +82,20 @@ export class StudentComponent implements OnInit {
       return;
     }
     const student = this.form.value as Student;
+    student.grades = this.studentToEdit.grades;
 
     if (this.mode === ModeEnum.ADD) {
-
       const studentToCreate = {
         firstName: student.firstName,
         lastName: student.lastName,
         gender: student.gender,
-        birthday: student.birthDay
+        birthday: student.birthDay,
+        grades: student.grades
       }
 
-      this.studentService.addStudent(studentToCreate).subscribe(x => this.setStudents());
+      this.studentService.addStudent(studentToCreate).subscribe(() => this.setStudents());
     } else {
-      this.studentService.updateStudent(student).subscribe(x => this.setStudents());
+      this.studentService.updateStudent(student).subscribe(() => this.setStudents());
     }
     this.cancel();
   }
@@ -102,4 +108,5 @@ export class StudentComponent implements OnInit {
     this.form.reset();
     this.mode = ModeEnum.NON;
   }
+
 }

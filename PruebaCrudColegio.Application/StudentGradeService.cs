@@ -21,7 +21,7 @@ namespace PruebaCrudColegio.Application
             _profressorRepository = profressorRepository;
         }
 
-        public async Task<IList<StudentGradeDto>> GetAllStudentGrades()
+        public async Task<IList<StudentGradeDto>> GetAllStudentGradesAsync()
         {
             var studentGrades = await _studentGradeRepository.GetAllAsync();
             return studentGrades.Select(studentGrade =>
@@ -34,12 +34,13 @@ namespace PruebaCrudColegio.Application
                     GradeName = grade.Name,
                     Section = studentGrade.Section,
                     ProfessorId = professor.Id,
-                    ProfessorName = professor.FirstName + " " + professor.LastName
+                    ProfessorName = professor.FirstName + " " + professor.LastName,
+                    StudentId = studentGrade.StudentId
                 };
             }).ToList();
         }
 
-        public async Task<IList<StudentGradeDto>> GetAllStudentGradesByUserId(Guid studentId)
+        public async Task<IList<StudentGradeDto>> GetAllStudentGradesByUserIdAsync(Guid studentId)
         {
             var studentStudentGrades = await _studentGradeRepository.GetWhere(studentGrade => studentGrade.StudentId == studentId);
             return studentStudentGrades.Select(studentStudentGrade =>
@@ -61,7 +62,7 @@ namespace PruebaCrudColegio.Application
             }).ToList();
         }
 
-        public async Task<bool> UpdateStudentGrades(Guid studentId, List<StudentGrade> studentGrades)
+        public async Task<bool> UpdateStudentGradesAsync(Guid studentId, List<StudentGradeDto> studentGrades)
         {
             var studentGradeStudents = await _studentGradeRepository.GetWhere(sg => sg.StudentId == studentId);
 
@@ -69,7 +70,7 @@ namespace PruebaCrudColegio.Application
             {
                 foreach (var studentGrade in studentGradeStudents)
                 {
-                    await _studentGradeRepository.Delete(studentGrade);
+                    await _studentGradeRepository.DeleteAsync(studentGrade);
                 }
 
                 foreach (var studentGrade in studentGrades)

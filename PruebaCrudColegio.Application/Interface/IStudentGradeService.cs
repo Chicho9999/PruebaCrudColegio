@@ -1,12 +1,11 @@
 ﻿using PruebaCrudColegio.Application.Dtos;
-using PruebaCrudColegio.Core.Model;
 
 namespace PruebaCrudColegio.Application.Interface
 {
     public interface IStudentGradeService
     {
-        Task<IList<StudentGradeDto>> GetAllStudentGrades();
-        Task<IList<StudentGradeDto>> GetAllStudentGradesByUserId(Guid userId);
-        Task<bool> UpdateStudentGrades(Guid id, List<StudentGrade> grades);
+        Task<IList<StudentGradeDto>> GetAllStudentGradesAsync();
+        Task<IList<StudentGradeDto>> GetAllStudentGradesByUserIdAsync(Guid userId);
+        Task<bool> UpdateStudentGradesAsync(Guid id, List<StudentGradeDto> grades);
     }
 }

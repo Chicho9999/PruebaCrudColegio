@@ -5,10 +5,10 @@ namespace PruebaCrudColegio.Application.Interface
 {
     public interface IStudentService
     {
-        Task<Student> AddStudent(StudentDto student);
+        Task<Student> AddStudentAsync(StudentDto student);
         Task<bool> DeleteStudent(Guid id);
-        Task<Student?> UpdateStudent(Guid id, StudentDto student);
-        Task<Student?> GetStudentById(Guid id);
+        Task<Student?> UpdateStudentAsync(Guid id, StudentDto student);
+        Task<Student?> GetStudentByIdAsync(Guid id);
         Task<IList<StudentDto>> GetAllStudents();
     }
 }

@@ -1,4 +1,4 @@
-import { Grade } from "./grade";
+import { StudentGrade } from "./studentGrade";
 
 export interface Student {
   id: string;
@@ -6,4 +6,5 @@ export interface Student {
   lastName: string;
   gender: string;
   birthDay: string;
+  grades: StudentGrade[];
 }

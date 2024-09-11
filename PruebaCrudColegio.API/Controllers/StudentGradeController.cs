@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using PruebaCrudColegio.Application.Dtos;
 using PruebaCrudColegio.Application.Interface;
-using PruebaCrudColegio.Core.Model;
 
 namespace PruebaCrudColegio.API.Controllers
 {
@@ -18,25 +18,25 @@ namespace PruebaCrudColegio.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllAsync()
         {
-            var studentGrades = await _studentGradeService.GetAllStudentGrades();
+            var studentGrades = await _studentGradeService.GetAllStudentGradesAsync();
 
             return Ok(studentGrades);
         }
 
         [HttpGet]
         [Route("ByStudentId/{id}")]
-        public async Task<IActionResult> GetStudentGradesByStudentId(Guid id)
+        public async Task<IActionResult> GetStudentGradesByStudentIdAsync(Guid id)
         {
-            var studentGrades = await _studentGradeService.GetAllStudentGradesByUserId(id);
+            var studentGrades = await _studentGradeService.GetAllStudentGradesByUserIdAsync(id);
 
             return Ok(studentGrades);
         }
 
         [HttpPut]
         [Route("updateStudentGrades/{id}")]
-        public async Task<IActionResult> GetStudentGradesByStudentId(Guid id, List<StudentGrade> studentGrades)
+        public async Task<IActionResult> GetStudentGradesByStudentIdAsync(Guid id, List<StudentGradeDto> studentGrades)
         {
-            var result = await _studentGradeService.UpdateStudentGrades(id, studentGrades);
+            var result = await _studentGradeService.UpdateStudentGradesAsync(id, studentGrades);
 
             return Ok(result);
         }

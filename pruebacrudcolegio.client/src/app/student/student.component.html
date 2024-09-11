@@ -21,7 +21,7 @@
             <td>{{ student.gender }}</td>
             <td>{{ student.birthDay }}</td>
             <td>
-              <button type="button" class="btn btn-sm btn-warning me-1" (click)="seeGrades(student.id, false)">
+              <button type="button" class="btn btn-sm btn-warning me-1" (click)="seeGrades(student, false)">
                 Grades
               </button>
             </td>
@@ -85,7 +85,7 @@
         <div class="mb-1 row">
           <label for="birthDay" class="col-sm-2 col-form-label">Grades</label>
           <div class="col-sm-2">
-            <button type="button" class="btn btn-sm btn-warning" (click)="seeGrades(this.studentId, true)">
+            <button type="button" class="btn btn-sm btn-warning" (click)="seeGrades(this.studentToEdit, true)">
               Grades
             </button>
           </div>

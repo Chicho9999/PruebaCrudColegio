@@ -14,6 +14,7 @@ namespace PruebaCrudColegio.Infrastructure.Repositories
             _pruebaCrudColegioContext = pruebaCrudColegioContext;
             _DbSet = _pruebaCrudColegioContext.Set<T>();
         }
+
         public async Task<T> AddAsync(T entity)
         {
             try
@@ -29,8 +30,23 @@ namespace PruebaCrudColegio.Infrastructure.Repositories
 
             return entity;
         }
+        public async Task<List<T>> BulkAddAsync(List<T> entities)
+        {
+            try
+            {
+                await _DbSet.AddRangeAsync(entities);
+                await _pruebaCrudColegioContext.SaveChangesAsync();
+            }
+            catch (DbUpdateException ex)
+            {
+                Console.WriteLine(ex.InnerException?.Message);
+                throw;
+            }
 
-        public async Task<bool> Delete(T entity)
+            return entities;
+        }
+
+        public async Task<bool> DeleteAsync(T entity)
         {
             try {
                 _DbSet.Remove(entity);
@@ -44,6 +60,23 @@ namespace PruebaCrudColegio.Infrastructure.Repositories
                 return false;
             }
         }
+
+        public async Task<bool> BulkDeleteAsync(List<T> entities)
+        {
+            try
+            {
+                _DbSet.RemoveRange(entities);
+                await _pruebaCrudColegioContext.SaveChangesAsync();
+                return true;
+
+            }
+            catch (DbUpdateException ex)
+            {
+                Console.WriteLine(ex.InnerException?.Message);
+                return false;
+            }
+        }
+
         public async Task<IList<T>> GetAllAsync(params Expression<Func<T, object>>[] includes)
         {
             try

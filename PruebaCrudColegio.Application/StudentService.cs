@@ -8,42 +8,11 @@ namespace PruebaCrudColegio.Application
     public class StudentService : IStudentService
     {
         private readonly IRepository<Student> _studentRepository;
-        private readonly IRepository<Grade> _gradeRepository;
-        private readonly IRepository<Professor> _professorRepository;
-        private readonly IRepository<StudentGrade> _studentGradeRepository;
+        private readonly IRepository<StudentGrade> _studenGradeRepository;
 
-        public StudentService(IRepository<Student> studentRepository,
-                              IRepository<Grade> gradeRepository,
-                              IRepository<Professor> professorRepository,
-                              IRepository<StudentGrade> studentGradeRepository) {
+        public StudentService(IRepository<Student> studentRepository, IRepository<StudentGrade> studenGradeRepository) {
             _studentRepository = studentRepository;
-            _gradeRepository = gradeRepository;
-            _professorRepository = professorRepository;
-            _studentGradeRepository = studentGradeRepository;
-        }
-        
-        public async Task<Student> AddStudent(StudentDto studentDto)
-        {
-            Student student = MapStudent(studentDto);
-
-            await _studentRepository.AddAsync(student);
-
-            return student;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public async Task<bool> DeleteStudent(Guid id)
-        {
-            var studentToDelete = await _studentRepository.GetByIdAsync(id);
-            if (studentToDelete != null) { 
-                await _studentRepository.Delete(studentToDelete);
-                return true;
-            }
-            return false;
+            _studenGradeRepository = studenGradeRepository;
         }
 
         /// <summary>
@@ -66,12 +35,42 @@ namespace PruebaCrudColegio.Application
             }).ToList();
         }
 
-        public async Task<Student?> GetStudentById(Guid id)
+        public async Task<Student> AddStudentAsync(StudentDto studentDto)
+        {
+            Student student = MapStudent(studentDto);
+
+            await _studentRepository.AddAsync(student);
+
+            return student;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<bool> DeleteStudent(Guid id)
+        {
+            var studentToDelete = await _studentRepository.GetByIdAsync(id);
+
+            var grades = await _studenGradeRepository.GetWhere(sg => sg.StudentId == id);
+            
+            var gradesDeleted = await _studenGradeRepository.BulkDeleteAsync([.. grades]);
+            
+            if (studentToDelete != null && gradesDeleted) { 
+                await _studentRepository.DeleteAsync(studentToDelete);
+                return true;
+            }
+            return false;
+        }
+
+
+        public async Task<Student?> GetStudentByIdAsync(Guid id)
         {
             return await _studentRepository.GetByIdAsync(id);
         }
 
-        public async Task<Student?> UpdateStudent(Guid id, StudentDto studentDto)
+        public async Task<Student?> UpdateStudentAsync(Guid id, StudentDto studentDto)
         {
             var student = MapStudent(studentDto);
 
