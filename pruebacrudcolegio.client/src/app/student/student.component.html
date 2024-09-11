@@ -5,8 +5,7 @@
       <table class="table">
         <thead>
           <tr>
-            <th scope="col">First Name</th>
-            <th scope="col">Last Name</th>
+            <th scope="col">Full Name</th>
             <th scope="col">Gender</th>
             <th scope="col">Birthday</th>
             <th scope="col">Grades</th>
@@ -16,9 +15,8 @@
         <tbody>
           @for (student of students; track student) {
           <tr>
-            <td>{{ student.firstName }}</td>
-            <td>{{ student.lastName }}</td>
-            <td>{{ student.gender }}</td>
+            <td>{{ student.firstName }} {{ student.lastName }}</td>
+            <td>{{ student.gender == 'M' ? "Masculino" : "Femenino" }}</td>
             <td>{{ student.birthDay }}</td>
             <td>
               <button type="button" class="btn btn-sm btn-warning me-1" (click)="seeGrades(student, false)">

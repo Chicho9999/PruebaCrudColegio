@@ -15,7 +15,7 @@ import { StudentGrade } from '../models/studentGrade';
   selector: 'app-student',
   standalone: true,
   imports: [ReactiveFormsModule, NavbarComponent, GradeComponent, CommonModule],
-  templateUrl: './student.component.html',  
+  templateUrl: './student.component.html',
   styleUrl: './student.component.css'
 })
 
@@ -35,8 +35,8 @@ export class StudentComponent implements OnInit {
 
   form = this.formBuilder.group({
     id: [''],
-    firstName: ['', Validators.required],
-    lastName: ['', Validators.required],
+    firstName: ['', [Validators.required, Validators.pattern('^[a-zA-Z \-\']+')]],
+    lastName: ['', [Validators.required, Validators.pattern('^[a-zA-Z \-\']+')]],
     gender: ['', Validators.required],
     birthDay: [formatDate(new Date(), 'dd-MM-yyyy', 'en'), [Validators.required]]
   });
@@ -101,7 +101,9 @@ export class StudentComponent implements OnInit {
   }
 
   removeStudent(student: Student) {
-    this.studentService.deleteStudent(student.id).subscribe(x => this.setStudents());
+    if (window.confirm('Are sure you want to delete this student ?')) {
+      this.studentService.deleteStudent(student.id).subscribe(x => this.setStudents());
+    }
   }
 
   cancel() {

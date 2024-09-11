@@ -55,11 +55,20 @@ export class GradeComponent {
   }
 
   saveGrade() {
+
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
     }
+
     const grade = this.form.value as Grade;
+
+    const gradeOccupied = this.grades.filter(g => g.professorId == grade.professorId);
+
+    if (gradeOccupied.length > 1) {
+      window.alert("Please Choose another Professor without Grade!")
+      return;
+    }
 
     if (this.mode === ModeEnum.ADD) {
 
