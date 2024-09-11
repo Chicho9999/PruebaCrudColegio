@@ -64,10 +64,16 @@ namespace PruebaCrudColegio.Application
 
         public async Task<bool> UpdateStudentGradesAsync(Guid studentId, List<StudentGradeDto> studentGrades)
         {
-            var studentGradeStudents = await _studentGradeRepository.GetWhere(sg => sg.StudentId == studentId);
-
+           
             try
             {
+                var studentGradeStudents = await _studentGradeRepository.GetWhere(sg => sg.StudentId == studentId);
+
+                var sameGradesBoth = studentGradeStudents.Where(y => studentGrades.Any(z => z.StudentId == y.StudentId && z.GradeId == y.GradeId));
+                
+                //Check if the grades didn't change
+                if (studentGradeStudents.Count() == studentGrades.Count && sameGradesBoth.Any()) return true;
+
                 foreach (var studentGrade in studentGradeStudents)
                 {
                     await _studentGradeRepository.DeleteAsync(studentGrade);

@@ -72,7 +72,9 @@ namespace PruebaCrudColegio.API.Controllers
         public async Task<IActionResult> PutAsync([FromBody] StudentDto studentDto)
         {
             var studentToEdit = await _studentService.UpdateStudentAsync(studentDto.Id, studentDto);
+            
             var result = await _studentGradeService.UpdateStudentGradesAsync(studentDto.Id, studentDto.Grades);
+            
             if (studentToEdit == null || !result)
             {
                 return NotFound();
@@ -80,7 +82,6 @@ namespace PruebaCrudColegio.API.Controllers
 
             return Ok(new
             {
-                student = studentToEdit,
                 message = "Student Updated Successfully!!!",
                 id = studentToEdit!.Id
             });
