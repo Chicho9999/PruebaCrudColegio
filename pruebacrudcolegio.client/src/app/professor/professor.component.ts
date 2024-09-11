@@ -1,87 +1,80 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { GradeService } from '../services/grade.service';
-import { Grade } from '../models/grade';
-import { ModeEnum } from '../models/mode.enum';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { CommonModule } from '@angular/common';
-import { Professor } from '../models/professor';
+import { ModeEnum } from '../models/mode.enum';
 import { ProfessorService } from '../services/professor.service';
+import { Professor } from '../models/professor';
 
 @Component({
   standalone: true,
   imports: [ReactiveFormsModule, NavbarComponent, CommonModule],
-  selector: 'app-grade',
-  templateUrl: './grade.component.html'
+  selector: 'app-professor',
+  templateUrl: './professor.component.html'
 })
-export class GradeComponent {
+export class ProfessorComponent {
 
   private formBuilder = inject(FormBuilder);
-  private gradeService = inject(GradeService);
   private professorService = inject(ProfessorService);
 
   ModeEnum = ModeEnum;
   mode = ModeEnum.NON;
-  grades!: Grade[];
   professors!: Professor[];
 
   form = this.formBuilder.group({
     id: [''],
-    name: ['', Validators.required],
-    professorName: [''],
-    professorId: ['', Validators.required]
+    firstName: ['', Validators.required],
+    lastName: ['', Validators.required],
+    gender: ['', Validators.required]
   });
 
   ngOnInit(): void {
-    this.setGrades();
     this.setProfessors();
-  }
-
-  setGrades() {
-    this.gradeService.getAll().subscribe(gs => this.grades = gs);
   }
 
   setProfessors() {
     this.professorService.getAll().subscribe(ps => this.professors = ps);
   }
 
-  addNewGrade() {
+  addNewProfessor() {
     this.mode = ModeEnum.ADD;
   }
 
-  editGrade(grade: Grade) {
+  editProfessor(professor: Professor) {
     this.mode = ModeEnum.EDIT;
-    this.form.setValue(grade);
+    this.form.setValue(professor);
   }
 
-  saveGrade() {
+  saveProfessor() {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
     }
-    const grade = this.form.value as Grade;
+    const professor = this.form.value as Professor;
 
     if (this.mode === ModeEnum.ADD) {
 
-      const gradeToCreate = {
-        name: grade.name,
-        professorId: grade.professorId
+      const professorToCreate = {
+        firstName: professor.firstName,
+        lastName: professor.lastName,
+        gender: professor.gender
       }
 
-      this.gradeService.addGrade(gradeToCreate).subscribe(() => this.setGrades());
+      this.professorService.addProfessor(professorToCreate).subscribe(() => this.setProfessors());
     } else {
-      this.gradeService.updateGrade(grade).subscribe(() => this.setGrades());
+      this.professorService.updateProfessor(professor).subscribe(() => this.setProfessors());
     }
 
     this.cancel();
   }
 
-  removeGrade(grade: Grade) {
-    this.gradeService.deleteGrade(grade.id).subscribe(x => this.setGrades());
+  removeProfessor(grade: Professor) {
+    this.professorService.deleteProfessor(grade.id).subscribe(x => this.setProfessors());
   }
 
   cancel() {
     this.form.reset();
     this.mode = ModeEnum.NON;
   }
+
 }

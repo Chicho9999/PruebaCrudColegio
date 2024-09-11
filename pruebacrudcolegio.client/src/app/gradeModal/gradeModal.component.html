@@ -1,0 +1,70 @@
+<div class="modal-card">
+  <header class="modal-card-head">
+    <a tabindex="0" (click)="exitModal()" role="button" aria-label="Close Modal">
+      <span>X</span>
+    </a>
+  </header>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Professor</th>
+        <th scope="col">Section</th>
+        <th *ngIf="matDialog.isEditing" scope="col">Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (studentGrade of this.matDialog.data.grades; track studentGrade) {
+      <tr>
+        <td>{{ studentGrade.gradeName }}</td>
+        <td>{{ studentGrade.professorName }}</td>
+        <td>{{ studentGrade.section }}</td>
+        <td *ngIf="matDialog.isEditing">
+          <button type="button" class="btn btn-sm btn-danger" (click)="removeGrade(studentGrade)">
+            Delete
+          </button>
+        </td>
+      </tr>
+      }
+    </tbody>
+    <tfoot>
+    </tfoot>
+  </table>
+  <div *ngIf="matDialog.isEditing" class="row">
+    <label for="grade" class="col-sm-2 col-form-label">
+      Grades
+    </label>
+    <div class="col-sm-6">
+      <select class="form-control" id="grade" formControlName="grade" (change)="updateGradeSelected($event)">
+        <option *ngFor="let grade of this.grades"
+                [value]="grade.id">
+          {{ grade.name }}
+        </option>
+      </select>
+    </div>
+  </div>
+  <div *ngIf="matDialog.isEditing" class="row">
+    <div class="col-sm-2">
+      Section
+    </div>
+    <div class="col-sm-2">
+      <input class="btn-group" type="number" value="1" (change)="updateSection($event)" />
+    </div>
+  </div>
+  <div *ngIf="matDialog.isEditing">
+    <div class="row">
+      <div class="col-sm-2">
+        <button type="button" class="btn btn-sm btn-success" (click)="addGrade()">
+          Add
+        </button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-8">
+      </div>
+      <button type="button" class="btn btn-sm btn-primary" (click)="exitModal()">
+        Save
+      </button>
+    </div>
+  </div>
+</div>

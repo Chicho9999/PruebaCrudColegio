@@ -1,70 +1,72 @@
-<div class="modal-card">
-  <header class="modal-card-head">
-    <a tabindex="0" (click)="exitModal()" role="button" aria-label="Close Modal">
-      <span>X</span>
-    </a>
-  </header>
-  <table class="table">
-    <thead>
-      <tr>
-        <th scope="col">Name</th>
-        <th scope="col">Professor</th>
-        <th scope="col">Section</th>
-        <th *ngIf="matDialog.isEditing" scope="col">Delete</th>
-      </tr>
-    </thead>
-    <tbody>
-      @for (studentGrade of gradesByStudent; track studentGrade) {
-      <tr>
-        <td>{{ studentGrade.gradeName }}</td>
-        <td>{{ studentGrade.professorName }}</td>
-        <td>{{ studentGrade.section }}</td>
-        <td *ngIf="matDialog.isEditing">
-          <button type="button" class="btn btn-sm btn-danger" (click)="removeGrade(studentGrade)">
-            Delete
-          </button>
-        </td>
-      </tr>
-      }
-    </tbody>
-    <tfoot>
-    </tfoot>
-  </table>
-  <div *ngIf="matDialog.isEditing" class="row">
-    <label for="grade" class="col-sm-2 col-form-label">
-      Grades
-    </label>
-    <div class="col-sm-6">
-      <select class="form-control" id="grade" formControlName="grade" (change)="updateGradeSelected($event)">
-        <option *ngFor="let grade of this.grades"
-                [value]="grade.id">
-          {{ grade.name }}
-        </option>
-      </select>
+<div class="d-flex flex-column mt-4">
+  <div class="card align-self-center w-50">
+    <h4 class="card-header text-center">Grade List</h4>
+    <div class="card-body">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Professor</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (grade of grades; track grade) {
+          <tr>
+            <td>{{ grade.name }}</td>
+            <td>{{ grade.professorName }}</td>
+            <td>
+              <button type="button" class="btn btn-sm btn-primary me-1" (click)="editGrade(grade)">
+                Edit
+              </button>
+              <button type="button" class="btn btn-sm btn-danger" (click)="removeGrade(grade)">
+                Delete
+              </button>
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
     </div>
-  </div>
-  <div *ngIf="matDialog.isEditing" class="row">
-    <div class="col-sm-2">
-      Section
-    </div>
-    <div class="col-sm-2">
-      <input class="btn-group" type="number" value="1" (change)="updateSection($event)" />
-    </div>
-  </div>
-  <div *ngIf="matDialog.isEditing">
-    <div class="row">
-      <div class="col-sm-2">
-        <button type="button" class="btn btn-sm btn-success" (click)="addGrade()">
-          Add
-        </button>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-sm-8">
-      </div>
-      <button type="button" class="btn btn-sm btn-primary" (click)="exitModal()">
-        Save
+    <div class="card-footer text-center">
+      <button type="button" class="btn btn-info" (click)="addNewGrade()">
+        Add New Grade
       </button>
     </div>
   </div>
+  @if (mode !==  ModeEnum.NON) {
+  <div class="card align-self-center w-50 mt-4">
+    <h4 class="card-header text-center">Add/Edit Grade</h4>
+    <div class="card-body">
+      <form [formGroup]="form">
+        <div class="mb-3 row">
+          <label for="name" class="col-sm-2 col-form-label">Name</label>
+          <div class="col-sm-10">
+            <input type="text" id="name" placeholder="Name" formControlName="name" class="form-control"
+                   [class.is-invalid]="form.controls.name.invalid && form.controls.name.touched" />
+          </div>
+        </div>
+        <div class="mb-3 row">
+          <label for="professorName" class="col-sm-2 col-form-label">Professor Name</label>
+          <div class="col-sm-10">
+            <select class="form-control" id="professor" formControlName="professorId">
+              <option *ngFor="let item of professors"
+                      [value]="item.id">
+                {{ item.firstName }} {{item.lastName}}
+              </option>
+            </select>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="card-footer d-flex justify-content-end">
+      <button type="button" class="btn btn-sm btn-success me-1" (click)="saveGrade()">
+        Submit
+      </button>
+      <button type="button" class="btn btn-sm btn-warning" (click)="cancel()">
+        Cancel
+      </button>
+    </div>
+  </div>
+  }
 </div>

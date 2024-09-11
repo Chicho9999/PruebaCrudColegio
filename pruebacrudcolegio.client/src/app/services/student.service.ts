@@ -22,7 +22,7 @@ export class StudentService {
     return this.http.put<Student>(this.url, student)
   }
 
-  deleteStudent(userId: string) {
-    return this.http.delete(`${this.url}${userId}`);
+  deleteStudent(studentId: string) {
+    return this.http.delete(`${this.url}${studentId}`);
   }
 }

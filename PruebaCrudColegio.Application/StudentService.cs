@@ -49,7 +49,7 @@ namespace PruebaCrudColegio.Application
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<bool> DeleteStudent(Guid id)
+        public async Task<bool> DeleteStudentAsync(Guid id)
         {
             var studentToDelete = await _studentRepository.GetByIdAsync(id);
 

@@ -87,12 +87,11 @@ namespace PruebaCrudColegio.API.Controllers
             });
         }
 
-
         [HttpDelete]
         [Route("{id}")]
-        public async Task<IActionResult> Delete([FromRoute] Guid id)
+        public async Task<IActionResult> DeleteAsync([FromRoute] Guid id)
         {
-            var result = await _studentService.DeleteStudent(id);
+            var result = await _studentService.DeleteStudentAsync(id);
             if (!result)
             {
                 return NotFound();

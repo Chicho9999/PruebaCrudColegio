@@ -10,7 +10,19 @@ export class ProfessorService {
   private url = 'http://localhost:5053/api/Professor/';
   private professors : Professor[] = [];
 
-  getProfessors() {
+  getAll() {
     return this.http.get<Professor[]>(this.url);
+  }
+
+  updateProfessor(professor: Professor) {
+    return this.http.put<Professor[]>(`${this.url}`, professor);
+  }
+
+  addProfessor(professorToCreate: any) {
+    return this.http.post<Professor>(this.url, professorToCreate);
+  }
+
+  deleteProfessor(id: string) {
+    return this.http.delete(`${this.url}${id}`);
   }
 }

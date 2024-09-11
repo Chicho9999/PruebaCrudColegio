@@ -8,16 +8,34 @@ namespace PruebaCrudColegio.Application
     public class GradeService : IGradeService
     {
         private readonly IRepository<Grade> _gradeRepository;
-        private readonly IRepository<StudentGrade> _studentGradeRepository;
         private readonly IRepository<Professor> _profressorRepository;
 
         public GradeService(IRepository<Grade> gradeRepository,
-                            IRepository<StudentGrade> studentGradeRepository,
                             IRepository<Professor> profressorRepository)
         {
             _gradeRepository = gradeRepository;
-            _studentGradeRepository = studentGradeRepository;
             _profressorRepository = profressorRepository;
+        }
+
+        public async Task<Grade> AddGradeAsync(GradeDto entity)
+        {
+            Grade grade = MapGrade(entity);
+
+            await _gradeRepository.AddAsync(grade);
+
+            return grade;
+        }
+
+        public async Task<bool> DeleteStudentAsync(Guid id)
+        {
+            var studentToDelete = await _gradeRepository.GetByIdAsync(id);
+
+            if (studentToDelete != null)
+            {
+                await _gradeRepository.DeleteAsync(studentToDelete);
+                return true;
+            }
+            return false;
         }
 
         public async Task<IList<GradeDto>> GetAllGrades()
@@ -52,6 +70,34 @@ namespace PruebaCrudColegio.Application
                 };
 
             }).ToList();
+        }
+
+        public async Task<Grade?> UpdateGradeAsync(Guid id, GradeDto gradeDto)
+        {
+            var grade = MapGrade(gradeDto);
+
+            var gradeToEdit = await _gradeRepository.GetByIdAsync(id);
+            if (gradeToEdit != null)
+            {
+                gradeToEdit.Name = grade.Name;
+                gradeToEdit.ProfessorId = grade.ProfessorId;
+
+                await _gradeRepository.UpdateAsync(gradeToEdit);
+
+                return gradeToEdit;
+            }
+
+            return null;
+        }
+
+        private Grade MapGrade(GradeDto entity)
+        {
+            return new Grade()
+            {
+                Id = entity.Id,
+                Name = entity.Name,
+                ProfessorId = entity.ProfessorId
+            };
         }
     }
 }
