@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using PruebaCrudColegio.Core.Model;
 using PruebaCrudColegio.Infrastructure.Enums;
 
@@ -7,11 +6,8 @@ namespace PruebaCrudColegio.Infrastructure
 {
     public class PruebaCrudColegioContext : DbContext
     {
-        private readonly string connectionString;
-
-        public PruebaCrudColegioContext(DbContextOptions options, IConfiguration configuration) : base(options)
+        public PruebaCrudColegioContext(DbContextOptions options) : base(options)
         {
-            connectionString = configuration.GetSection("ConnectionStrings:DefaultConnection").Value;
         }
 
         public DbSet<Student> Students { get; set; }
@@ -129,11 +125,6 @@ namespace PruebaCrudColegio.Infrastructure
             modelBuilder.Entity<Student>().HasData(student2);
             modelBuilder.Entity<StudentGrade>().HasData(studentGrade1);
             modelBuilder.Entity<StudentGrade>().HasData(studentGrade2);
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer(connectionString);
         }
     }
 }

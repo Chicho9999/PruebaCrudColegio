@@ -29,7 +29,7 @@ builder.Services.AddScoped<IRepository<Professor>, Repository<Professor>>();
 
 builder.Services.AddDbContext<PruebaCrudColegioContext>(options =>
 {
-    options.UseSqlServer();
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
 var app = builder.Build();
